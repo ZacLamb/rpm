@@ -145,12 +145,12 @@ p{margin:0 0 1.1em} .lead{font-size:1.15rem;color:var(--ink-3)} .muted{color:var
 .town-card h3{font-size:1.15rem;margin-bottom:.2rem}.town-card p{color:var(--muted);font-size:.85rem;margin-bottom:.6rem}.town-card span{font-family:var(--display);font-weight:700;color:var(--glass-deep);font-size:.85rem;text-transform:uppercase;letter-spacing:.06em}
 
 /* article layout (service/town) */
-.article{display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:3rem;align-items:start}
+.article{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,380px);gap:3rem;align-items:start}
 .article__main h2{font-size:clamp(1.5rem,2.6vw,2.1rem);margin-top:2.4rem}
 .article__img img{border-radius:var(--radius);aspect-ratio:16/9;object-fit:cover;width:100%;box-shadow:var(--shadow)}.article__img{margin:2rem 0}
 .article__side{position:sticky;top:100px;display:flex;flex-direction:column;gap:1.3rem}
 .sidebox{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:1.5rem}.sidebox h3{font-size:1.2rem}
-.sidebox--form{box-shadow:var(--shadow);border-top:4px solid var(--glass)}
+.sidebox--form{box-shadow:var(--shadow);border-top:4px solid var(--glass);min-width:0}.sidebox--form .form__grid{grid-template-columns:1fr}.sidebox--form .form__consent{font-size:.7rem}
 .sidebox--dark{background:var(--ink);color:#C9DBE6}.sidebox--dark h3{color:#fff}
 .sidelinks{list-style:none;padding:0;margin:0}.sidelinks li{border-bottom:1px solid var(--line)}.sidelinks li:last-child{border:0}.sidelinks a{display:block;padding:.6rem 0;color:var(--ink);font-weight:600}.sidelinks a:hover{color:var(--glass-deep)}
 .mini-cards{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
@@ -162,8 +162,8 @@ p{margin:0 0 1.1em} .lead{font-size:1.15rem;color:var(--ink-3)} .muted{color:var
 
 /* form */
 .form__grid{display:grid;grid-template-columns:1fr 1fr;gap:.9rem}.form__full{grid-column:1/-1}
-.form label{display:flex;flex-direction:column;gap:.3rem;font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-3)}
-.form input,.form select,.form textarea{font:inherit;font-size:1rem;text-transform:none;letter-spacing:0;font-weight:400;padding:.75rem .9rem;border:1.5px solid var(--line);border-radius:8px;background:#fff;color:var(--text);transition:.2s}
+.form{min-width:0}.form label{display:flex;flex-direction:column;gap:.3rem;min-width:0;font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-3)}
+.form input,.form select,.form textarea{width:100%;min-width:0;box-sizing:border-box;font:inherit;font-size:1rem;text-transform:none;letter-spacing:0;font-weight:400;padding:.75rem .9rem;border:1.5px solid var(--line);border-radius:8px;background:#fff;color:var(--text);transition:.2s}
 .form input:focus,.form select:focus,.form textarea:focus{outline:none;border-color:var(--glass);box-shadow:0 0 0 4px rgba(47,167,214,.18)}
 .form__consent{font-size:.75rem;color:var(--muted);margin:1rem 0}
 .contact-list{list-style:none;padding:0;margin:0 0 2rem}.contact-list li{display:grid;grid-template-columns:110px 1fr;gap:1rem;padding:.7rem 0;border-bottom:1px solid var(--line)}.contact-list strong{font-family:var(--display);text-transform:uppercase;letter-spacing:.08em;font-size:.8rem;color:var(--muted)}.contact-list a{font-weight:700;color:var(--ink)}
