@@ -1,9 +1,10 @@
+<% preloadImage = img('hero').src %>
 <%- include('../partials/head') %>
 <%- include('../partials/header') %>
 
 <!-- HERO -->
 <section class="hero">
-  <div class="hero__media"><img src="<%= img('hero').src %>" alt="<%= img('hero').alt %>" fetchpriority="high"></div>
+  <div class="hero__media"><img src="<%= img('hero').src %>" alt="<%= img('hero').alt %>" width="<%= img('hero').w %>" height="<%= img('hero').h %>" width="<%= img('hero').w %>" height="<%= img('hero').h %>" fetchpriority="high"></div>
   <div class="hero__shade"></div>
   <div class="wrap hero__in">
     <p class="eyebrow eyebrow--light reveal">★★★★★ Northborough, MA · Serving Worcester County &amp; MetroWest</p>
@@ -31,7 +32,7 @@
 <section class="section">
   <div class="wrap split">
     <div class="split__media">
-      <img src="<%= img('team').src %>" alt="<%= img('team').alt %>" loading="lazy">
+      <img src="<%= img('team').src %>" alt="<%= img('team').alt %>" width="<%= img('team').w %>" height="<%= img('team').h %>" width="<%= img('team').w %>" height="<%= img('team').h %>" loading="lazy">
       <div class="split__badge"><strong>Since <%= business.founded %></strong><span>Northborough, MA</span></div>
     </div>
     <div class="split__body">
@@ -58,7 +59,7 @@
     <div class="cards">
       <% services.forEach((s, i) => { %>
       <a class="card reveal" href="/services/<%= s.slug %>" style="--d:<%= (i % 4) * 80 %>ms">
-        <div class="card__media"><img src="<%= img(s.slug).src %>" alt="<%= img(s.slug).alt %>" loading="lazy"><% if (s.popular) { %><span class="card__tag">Most popular</span><% } %></div>
+        <div class="card__media"><img src="<%= img(s.slug).src %>" alt="<%= img(s.slug).alt %>" width="<%= img(s.slug).w %>" height="<%= img(s.slug).h %>" width="<%= img(s.slug).w %>" height="<%= img(s.slug).h %>" loading="lazy"><% if (s.popular) { %><span class="card__tag">Most popular</span><% } %></div>
         <div class="card__body">
           <h3><%= s.name %></h3>
           <p><%= s.tagline %></p>
@@ -72,7 +73,7 @@
 
 <!-- RESIDENTIAL TO COMMERCIAL -->
 <section class="feature">
-  <div class="feature__media"><img src="<%= img('hospital').src %>" alt="<%= img('hospital').alt %>" loading="lazy"></div>
+  <div class="feature__media"><img src="<%= img('hospital').src %>" alt="<%= img('hospital').alt %>" width="<%= img('hospital').w %>" height="<%= img('hospital').h %>" width="<%= img('hospital').w %>" height="<%= img('hospital').h %>" loading="lazy"></div>
   <div class="feature__body">
     <p class="eyebrow eyebrow--light">Residential to commercial</p>
     <h2>No matter the job size — from hospital-grade projects to home services, we're here to serve.</h2>
@@ -161,7 +162,7 @@
     </div>
     <div class="gallery gallery--home">
       <% ['storefront-doors','wine-rooms','tempered-safety-glass','office-sliders','herculite-doors','bathroom','basement','spandrel-glass'].forEach(k => { %>
-      <figure class="gallery__item reveal"><img src="<%= img(k).src %>" alt="<%= img(k).alt %>" loading="lazy"></figure>
+      <figure class="gallery__item reveal"><img src="<%= img(k).src %>" alt="<%= img(k).alt %>" width="<%= img(k).w %>" height="<%= img(k).h %>" width="<%= img(k).w %>" height="<%= img(k).h %>" loading="lazy"></figure>
       <% }) %>
     </div>
     <p class="center"><a class="btn btn--primary" href="/gallery">View all projects</a></p>

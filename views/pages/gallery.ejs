@@ -1,7 +1,7 @@
 <%- include('../partials/head') %>
 <%- include('../partials/header') %>
 <section class="page-hero page-hero--short">
-  <div class="page-hero__media"><img src="<%= img('wine-rooms').src %>" alt="<%= img('wine-rooms').alt %>"></div>
+  <div class="page-hero__media"><img src="<%= img('wine-rooms').src %>" alt="<%= img('wine-rooms').alt %>" width="<%= img('wine-rooms').w %>" height="<%= img('wine-rooms').h %>" width="<%= img('wine-rooms').w %>" height="<%= img('wine-rooms').h %>"></div>
   <div class="page-hero__shade"></div>
   <div class="wrap page-hero__in">
     <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <span>Our Work</span></nav>
@@ -12,7 +12,7 @@
 <section class="section">
   <div class="wrap">
     <div class="gallery">
-      <% keys.forEach(k => { %><figure class="gallery__item reveal"><img src="<%= img(k).src %>" alt="<%= img(k).alt %>" loading="lazy"><figcaption><%= img(k).alt %></figcaption></figure><% }) %>
+      <% keys.forEach(k => { %><figure class="gallery__item reveal"><img src="<%= img(k).src %>" alt="<%= img(k).alt %>" width="<%= img(k).w %>" height="<%= img(k).h %>" width="<%= img(k).w %>" height="<%= img(k).h %>" loading="lazy"><figcaption><%= img(k).alt %></figcaption></figure><% }) %>
     </div>
   </div>
 </section>

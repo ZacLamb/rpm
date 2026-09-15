@@ -10,10 +10,12 @@ const images = require('./data/images');
 const app = express();
 const PORT = process.env.PORT || 3000;
 const SITE_URL = (process.env.SITE_URL || 'https://rpmglass.com').replace(/\/$/, '');
+// GHL inbound webhook for the RPM Glass sub-account (env var overrides if it ever changes)
+const GHL_WEBHOOK_URL = process.env.GHL_WEBHOOK_URL || 'https://services.leadconnectorhq.com/hooks/gqZLaxiRnT93o0AopLh3/webhook-trigger/6d7c2d91-a248-427f-9d47-8ab230dfe520';
 
 const business = {
   name: 'RPM Glass',
-  legalName: 'RPM Glass Services',
+  legalName: 'RPM Glass & Services Inc.',
   phone: '(774) 456-9850',
   phoneHref: 'tel:+17744569850',
   smsHref: 'sms:+17744569850',
@@ -31,20 +33,38 @@ const business = {
 };
 
 // Resolve image → local path if downloaded, else remote Higgsfield URL
+const DIMS = { '16:9': [1600, 900], '4:3': [1200, 900] };
 function img(key) {
   const entry = images[key];
-  if (!entry) return { src: '', alt: '' };
-  const local = path.join(__dirname, 'public', 'images', entry.file);
-  const src = fs.existsSync(local) && fs.statSync(local).size > 1000 ? '/images/' + entry.file : entry.url;
-  return { src, alt: entry.alt };
+  if (!entry) return { src: '', alt: '', w: 1200, h: 900 };
+  const dir = path.join(__dirname, 'public', 'images');
+  const candidates = [entry.file, entry.file.replace(/\.webp$/, '.png')];
+  let src = entry.url;
+  for (const f of candidates) {
+    const p = path.join(dir, f);
+    if (fs.existsSync(p) && fs.statSync(p).size > 1000) { src = '/images/' + f; break; }
+  }
+  const [w, h] = DIMS[entry.ar] || DIMS['4:3'];
+  return { src, alt: entry.alt, w, h };
 }
+
+// Enforce HTTPS + canonical host (Railway sets x-forwarded-proto). Skips localhost.
+app.set('trust proxy', true);
+app.use((req, res, next) => {
+  const host = req.headers.host || '';
+  if (/localhost|127\.0\.0\.1|railway\.app$/.test(host)) return next();
+  const proto = req.headers['x-forwarded-proto'] || req.protocol;
+  const canonicalHost = SITE_URL.replace(/^https?:\/\//, '');
+  if (proto !== 'https' || host !== canonicalHost) return res.redirect(301, SITE_URL + req.originalUrl);
+  next();
+});
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(compression());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(express.static(path.join(__dirname, 'public'), { maxAge: '7d' }));
+app.use(express.static(path.join(__dirname, 'public'), { maxAge: '30d', immutable: true }));
 
 // Globals for every template
 app.use((req, res, next) => {
@@ -56,6 +76,8 @@ app.use((req, res, next) => {
   res.locals.path = req.path;
   res.locals.canonical = SITE_URL + req.path.replace(/\/$/, '') || SITE_URL;
   res.locals.year = new Date().getFullYear();
+  res.locals.googleVerification = process.env.GOOGLE_SITE_VERIFICATION || '';
+  res.locals.ogImage = SITE_URL + '/images/og-image.jpg';
   next();
 });
 
@@ -134,7 +156,7 @@ app.get('/contact', (req, res) => {
   });
 });
 
-// Form → GHL inbound webhook (set GHL_WEBHOOK_URL in Railway)
+// Form → GHL inbound webhook. Payload keys map to workflow fields: full_name, phone, email, town, service, property_type, message, page, source
 app.post('/contact', async (req, res) => {
   const b = req.body || {};
   if (b.website) return res.redirect('/contact?sent=1'); // honeypot
@@ -151,13 +173,13 @@ app.post('/contact', async (req, res) => {
     submitted_at: new Date().toISOString(),
   };
   try {
-    if (process.env.GHL_WEBHOOK_URL) {
-      const r = await fetch(process.env.GHL_WEBHOOK_URL, {
+    if (GHL_WEBHOOK_URL) {
+      const r = await fetch(GHL_WEBHOOK_URL, {
         method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload),
       });
       if (!r.ok) throw new Error('Webhook ' + r.status);
     } else {
-      console.log('[lead] (no GHL_WEBHOOK_URL set)', payload);
+      console.log('[lead] (no webhook configured)', payload);
     }
     res.redirect('/contact?sent=1');
   } catch (e) {

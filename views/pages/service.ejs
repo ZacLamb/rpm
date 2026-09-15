@@ -7,7 +7,7 @@
 <%- include('../partials/header') %>
 
 <section class="page-hero">
-  <div class="page-hero__media"><img src="<%= img(service.slug).src %>" alt="<%= img(service.slug).alt %>"></div>
+  <div class="page-hero__media"><img src="<%= img(service.slug).src %>" alt="<%= img(service.slug).alt %>" width="<%= img(service.slug).w %>" height="<%= img(service.slug).h %>" width="<%= img(service.slug).w %>" height="<%= img(service.slug).h %>"></div>
   <div class="page-hero__shade"></div>
   <div class="wrap page-hero__in">
     <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/services">Services</a> / <span><%= service.short %></span></nav>
@@ -31,7 +31,7 @@
         <% service.features.forEach(f => { %><li><%= f %></li><% }) %>
       </ul>
 
-      <figure class="article__img"><img src="<%= img(service.slug).src %>" alt="<%= img(service.slug).alt %>" loading="lazy"></figure>
+      <figure class="article__img"><img src="<%= img(service.slug).src %>" alt="<%= img(service.slug).alt %>" width="<%= img(service.slug).w %>" height="<%= img(service.slug).h %>" width="<%= img(service.slug).w %>" height="<%= img(service.slug).h %>" loading="lazy"></figure>
 
       <h2>Frequently asked questions</h2>
       <div class="faqs">

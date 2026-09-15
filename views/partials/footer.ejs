@@ -2,14 +2,14 @@
 <footer class="footer">
   <div class="wrap footer__grid">
     <div class="footer__brand">
-      <a class="logo logo--light" href="/"><span class="logo__text">RPM <em>Glass</em></span></a>
+      <a class="footer__logo" href="/"><img src="/images/logo.png" alt="RPM Glass &amp; Services Inc." width="180" height="173" loading="lazy"></a>
       <p>Commercial and residential glass design, installation and repair — trusted across Worcester County and MetroWest for over <%= business.yearsInBusiness %> years.</p>
       <a class="footer__phone" href="<%= business.phoneHref %>"><%= business.phone %></a>
       <p class="footer__addr"><%= business.street %><br><%= business.city %>, <%= business.state %> <%= business.zip %><br><a href="mailto:<%= business.email %>"><%= business.email %></a></p>
       <div class="footer__social"><a href="<%= business.instagram %>" target="_blank" rel="noopener">Instagram</a></div>
     </div>
     <div>
-      <h4>Quick Links</h4>
+      <h3 class="footer__h">Quick Links</h3>
       <ul>
         <li><a href="/">Home</a></li>
         <li><a href="/about">About Us</a></li>
@@ -20,20 +20,20 @@
       </ul>
     </div>
     <div>
-      <h4>Our Services</h4>
+      <h3 class="footer__h">Our Services</h3>
       <ul>
         <% services.forEach(s => { %><li><a href="/services/<%= s.slug %>"><%= s.name %></a></li><% }) %>
       </ul>
     </div>
     <div>
-      <h4>Towns We Serve</h4>
+      <h3 class="footer__h">Towns We Serve</h3>
       <ul class="footer__towns">
         <% towns.forEach(t => { %><li><a href="/service-areas/<%= t.slug %>"><%= t.name %>, MA</a></li><% }) %>
       </ul>
     </div>
   </div>
   <div class="wrap footer__bottom">
-    <span>© <%= year %> <%= business.name %>. All rights reserved. Fully licensed &amp; insured in Massachusetts.</span>
+    <span>© <%= year %> <%= business.legalName %> All rights reserved. Fully licensed &amp; insured in Massachusetts.</span>
     <span><a href="/sitemap.xml">Sitemap</a></span>
   </div>
 </footer>

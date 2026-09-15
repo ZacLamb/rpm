@@ -6,7 +6,7 @@
 <%- include('../partials/header') %>
 
 <section class="page-hero page-hero--short">
-  <div class="page-hero__media"><img src="<%= img('town').src %>" alt="Glass storefronts in <%= town.name %>, Massachusetts"></div>
+  <div class="page-hero__media"><img src="<%= img('town').src %>" alt="Glass storefronts in <%= town.name %>, Massachusetts" width="<%= img('town').w %>" height="<%= img('town').h %>"></div>
   <div class="page-hero__shade"></div>
   <div class="wrap page-hero__in">
     <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/service-areas">Service Areas</a> / <span><%= town.name %>, MA</span></nav>
@@ -29,7 +29,7 @@
       <div class="mini-cards">
         <% featured.forEach(s => { %>
         <a class="mini-card" href="/services/<%= s.slug %>">
-          <img src="<%= img(s.slug).src %>" alt="<%= s.name %> in <%= town.name %>, MA" loading="lazy">
+          <img src="<%= img(s.slug).src %>" alt="<%= s.name %> in <%= town.name %>, MA" width="<%= img(s.slug).w %>" height="<%= img(s.slug).h %>" loading="lazy">
           <div><h3><%= s.name %></h3><p><%= s.tagline %></p><span>Learn more →</span></div>
         </a>
         <% }) %>

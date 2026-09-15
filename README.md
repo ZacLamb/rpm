@@ -11,7 +11,7 @@ Node/Express + EJS marketing site for RPM Glass (Northborough, MA). Built for Gi
 2. `npm install` triggers `postinstall`, which downloads the Higgsfield renders in `data/images.js` into `public/images/`. If a download fails the site falls back to the remote URL.
 3. Set variables:
    - `SITE_URL` = `https://rpmglass.com`
-   - `GHL_WEBHOOK_URL` = inbound-webhook URL from a GHL workflow (form posts JSON: full_name, phone, email, town, service, property_type, message, page, source).
+   - `GHL_WEBHOOK_URL` — already defaults to the RPM Glass sub-account inbound webhook in `server.js`; only set this if the workflow trigger URL changes. Form posts JSON: full_name, phone, email, town, service, property_type, message, page, source.
 4. Point the rpmglass.com domain at the Railway service.
 
 ## Editing content
