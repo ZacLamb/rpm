@@ -1,0 +1,205 @@
+<%- include('../partials/head') %>
+<%- include('../partials/header') %>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero__media"><img src="<%= img('hero').src %>" alt="<%= img('hero').alt %>" fetchpriority="high"></div>
+  <div class="hero__shade"></div>
+  <div class="wrap hero__in">
+    <p class="eyebrow eyebrow--light reveal">★★★★★ Northborough, MA · Serving Worcester County &amp; MetroWest</p>
+    <h1 class="reveal">Your trusted partner in <span class="hl">glass solutions.</span></h1>
+    <p class="hero__sub reveal">Storefronts, commercial doors, safety glass, office partitions and wine rooms — designed, installed and repaired by one crew for over <%= business.yearsInBusiness %> years.</p>
+    <div class="hero__actions reveal">
+      <a class="btn btn--accent btn--lg" href="/contact#estimate">Get a Free Estimate</a>
+      <a class="btn btn--ghost btn--lg" href="<%= business.phoneHref %>">Call <%= business.phone %></a>
+    </div>
+    <ul class="hero__ticks reveal">
+      <li>Transparent pricing</li><li>24/7 emergency service</li><li>Licensed &amp; insured</li>
+    </ul>
+  </div>
+  <div class="hero__stats">
+    <div class="wrap hero__stats-in">
+      <div><strong data-count="12">12</strong><span>Years in business</span></div>
+      <div><strong data-count="1000">1,000</strong><span>Projects completed</span></div>
+      <div><strong>24/7</strong><span>Emergency response</span></div>
+      <div><strong data-count="30">30</strong><span>Towns served</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- WELCOME -->
+<section class="section">
+  <div class="wrap split">
+    <div class="split__media">
+      <img src="<%= img('team').src %>" alt="<%= img('team').alt %>" loading="lazy">
+      <div class="split__badge"><strong>Since <%= business.founded %></strong><span>Northborough, MA</span></div>
+    </div>
+    <div class="split__body">
+      <p class="eyebrow">Trusted glass contractor</p>
+      <h2>Welcome to RPM Glass</h2>
+      <p class="lead">We know the frustrations of glass work done wrong: crews that don't show, glass that arrives the wrong size, and three different vendors pointing fingers. That's why RPM Glass handles measurement, fabrication, installation and service as one team.</p>
+      <p>From hospital-grade commercial projects and multi-bay <a href="/services/storefront-doors">storefronts</a> to a homeowner's <a href="/services/heavy-glass">frameless shower or glass railing</a>, no job is too big or too small. Every project ships with clear, upfront pricing and a crew that treats your property like their own.</p>
+      <div class="split__actions">
+        <a class="btn btn--primary" href="/about">More about us</a>
+        <a class="btn btn--link" href="/service-areas">See where we work →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="section section--ice" id="services">
+  <div class="wrap">
+    <div class="section__head">
+      <p class="eyebrow">Our services</p>
+      <h2>The most complete glass service in Central Massachusetts</h2>
+      <p>Commercial or residential, new install or emergency repair — click any service to learn more.</p>
+    </div>
+    <div class="cards">
+      <% services.forEach((s, i) => { %>
+      <a class="card reveal" href="/services/<%= s.slug %>" style="--d:<%= (i % 4) * 80 %>ms">
+        <div class="card__media"><img src="<%= img(s.slug).src %>" alt="<%= img(s.slug).alt %>" loading="lazy"><% if (s.popular) { %><span class="card__tag">Most popular</span><% } %></div>
+        <div class="card__body">
+          <h3><%= s.name %></h3>
+          <p><%= s.tagline %></p>
+          <span class="card__more">Learn more →</span>
+        </div>
+      </a>
+      <% }) %>
+    </div>
+  </div>
+</section>
+
+<!-- RESIDENTIAL TO COMMERCIAL -->
+<section class="feature">
+  <div class="feature__media"><img src="<%= img('hospital').src %>" alt="<%= img('hospital').alt %>" loading="lazy"></div>
+  <div class="feature__body">
+    <p class="eyebrow eyebrow--light">Residential to commercial</p>
+    <h2>No matter the job size — from hospital-grade projects to home services, we're here to serve.</h2>
+    <p>Glass is a safe, elegant way to give your location the identity it needs to stay professional and protected. We bring the same precision to a surgical suite partition as we do to a basement gym enclosure.</p>
+    <ul class="ticks ticks--light">
+      <li><a href="/services/laminated-safety-glass">Security &amp; acoustic laminated glass</a></li>
+      <li><a href="/services/office-sliders">Glass office fronts &amp; partitions</a></li>
+      <li><a href="/services/tempered-safety-glass">Code-compliant safety glazing</a></li>
+      <li><a href="/services/commercial-glass-repairs">24/7 emergency board-up &amp; repair</a></li>
+    </ul>
+    <a class="btn btn--accent" href="/contact#estimate">Book a service</a>
+  </div>
+</section>
+
+<!-- WHY CHOOSE -->
+<section class="section">
+  <div class="wrap">
+    <div class="section__head">
+      <p class="eyebrow">Why choose RPM Glass</p>
+      <h2>Create a beautiful and economical environment</h2>
+      <p>Everything we do is built on three pillars.</p>
+    </div>
+    <div class="pillars">
+      <div class="pillar reveal">
+        <div class="pillar__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18M7 15h4"/></svg></div>
+        <h3>Transparent pricing</h3>
+        <p>Clear, upfront estimates with no hidden fees. You know the number before we cut a single lite.</p>
+      </div>
+      <div class="pillar reveal" style="--d:100ms">
+        <div class="pillar__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div>
+        <h3>Customer service 24/7</h3>
+        <p>A broken storefront doesn't wait for Monday. Our emergency line is answered day or night.</p>
+      </div>
+      <div class="pillar reveal" style="--d:200ms">
+        <div class="pillar__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6l8-3z"/><path d="M9 12l2 2 4-4"/></svg></div>
+        <h3>Safety first</h3>
+        <p>Code-compliant safety glazing, insured crews and proper lifting equipment on every job.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="section section--dark">
+  <div class="wrap">
+    <div class="section__head section__head--light">
+      <p class="eyebrow eyebrow--light">How it works</p>
+      <h2>From first call to final polish in 4 simple steps</h2>
+    </div>
+    <ol class="steps">
+      <li class="reveal"><span>01</span><h3>Free consultation</h3><p>Call, text or send photos. We'll talk through the opening, the glass type and your timeline.</p></li>
+      <li class="reveal" style="--d:100ms"><span>02</span><h3>On-site measure &amp; quote</h3><p>We measure every opening ourselves and send a clear, itemized estimate — no surprises.</p></li>
+      <li class="reveal" style="--d:200ms"><span>03</span><h3>Fabrication &amp; install</h3><p>Glass is cut, tempered or laminated to spec and set by our own crew with the right equipment.</p></li>
+      <li class="reveal" style="--d:300ms"><span>04</span><h3>Walkthrough &amp; support</h3><p>We inspect every edge and seal with you, and we're one call away for service afterward.</p></li>
+    </ol>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="section section--ice">
+  <div class="wrap">
+    <div class="section__head">
+      <p class="eyebrow">Hear from our clients</p>
+      <h2>What people say about RPM Glass</h2>
+      <p class="stars">★★★★★ <span>5.0 rating</span></p>
+    </div>
+    <div class="quotes">
+      <blockquote class="quote reveal">
+        <p>"RPM Glass exceeded our expectations in every way. From the initial consultation to the final installation, their team was professional, courteous, and highly skilled. The new storefront glass looks fantastic and has significantly improved our store's energy efficiency."</p>
+        <footer>— Diane T., business owner</footer>
+      </blockquote>
+      <blockquote class="quote reveal" style="--d:120ms">
+        <p>"I had RPM Glass install custom glass railings and doors for my new home, and the experience was outstanding. Their attention to detail, commitment to safety, and transparent pricing made the entire process seamless. I've received numerous compliments on the glass."</p>
+        <footer>— Emily R., homeowner</footer>
+      </blockquote>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section class="section">
+  <div class="wrap">
+    <div class="section__head">
+      <p class="eyebrow">Our recent work</p>
+      <h2>See the difference we make</h2>
+    </div>
+    <div class="gallery gallery--home">
+      <% ['storefront-doors','wine-rooms','tempered-safety-glass','office-sliders','herculite-doors','bathroom','basement','spandrel-glass'].forEach(k => { %>
+      <figure class="gallery__item reveal"><img src="<%= img(k).src %>" alt="<%= img(k).alt %>" loading="lazy"></figure>
+      <% }) %>
+    </div>
+    <p class="center"><a class="btn btn--primary" href="/gallery">View all projects</a></p>
+  </div>
+</section>
+
+<!-- SERVICE AREAS -->
+<section class="section section--ice">
+  <div class="wrap">
+    <div class="section__head">
+      <p class="eyebrow">Where we work</p>
+      <h2>Proudly serving Worcester County &amp; MetroWest</h2>
+      <p>Based in Northborough, our crews are on the road daily in these communities and beyond.</p>
+    </div>
+    <div class="chips">
+      <% towns.forEach(t => { %><a class="chip" href="/service-areas/<%= t.slug %>"><%= t.name %></a><% }) %>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="section" id="contact">
+  <div class="wrap split split--form">
+    <div class="split__body">
+      <p class="eyebrow">Get a free estimate</p>
+      <h2>Let's talk about your project</h2>
+      <p class="lead">Send us the details and we'll follow up fast — usually within the hour during business hours.</p>
+      <ul class="contact-list">
+        <li><strong>Call or text</strong><a href="<%= business.phoneHref %>"><%= business.phone %></a></li>
+        <li><strong>Email</strong><a href="mailto:<%= business.email %>"><%= business.email %></a></li>
+        <li><strong>Visit</strong><span><%= business.street %>, <%= business.city %>, <%= business.state %> <%= business.zip %></span></li>
+        <li><strong>Hours</strong><span><%= business.hours %></span></li>
+      </ul>
+    </div>
+    <div class="split__form">
+      <%- include('../partials/form') %>
+    </div>
+  </div>
+</section>
+
+<%- include('../partials/footer') %>

@@ -1,0 +1,72 @@
+<% extraSchema = [
+  { "@context": "https://schema.org", "@type": "Service", "name": service.name, "serviceType": service.name, "provider": { "@id": siteUrl + "/#business" }, "areaServed": towns.map(t => t.name + ", MA"), "url": siteUrl + "/services/" + service.slug, "description": service.intro },
+  { "@context": "https://schema.org", "@type": "FAQPage", "mainEntity": service.faqs.map(f => ({ "@type": "Question", "name": f.q, "acceptedAnswer": { "@type": "Answer", "text": f.a } })) },
+  { "@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [ { "@type": "ListItem", "position": 1, "name": "Home", "item": siteUrl + "/" }, { "@type": "ListItem", "position": 2, "name": "Services", "item": siteUrl + "/services" }, { "@type": "ListItem", "position": 3, "name": service.name, "item": siteUrl + "/services/" + service.slug } ] }
+] %>
+<%- include('../partials/head') %>
+<%- include('../partials/header') %>
+
+<section class="page-hero">
+  <div class="page-hero__media"><img src="<%= img(service.slug).src %>" alt="<%= img(service.slug).alt %>"></div>
+  <div class="page-hero__shade"></div>
+  <div class="wrap page-hero__in">
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/services">Services</a> / <span><%= service.short %></span></nav>
+    <h1><%= service.name %></h1>
+    <p class="hero__sub"><%= service.tagline %></p>
+    <div class="hero__actions">
+      <a class="btn btn--accent btn--lg" href="#estimate">Get a Free Estimate</a>
+      <a class="btn btn--ghost btn--lg" href="<%= business.phoneHref %>">Call <%= business.phone %></a>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap article">
+    <div class="article__main">
+      <p class="lead"><%= service.intro %></p>
+      <% service.body.forEach(p => { %><p><%= p %></p><% }) %>
+
+      <h2>What's included</h2>
+      <ul class="ticks ticks--2col">
+        <% service.features.forEach(f => { %><li><%= f %></li><% }) %>
+      </ul>
+
+      <figure class="article__img"><img src="<%= img(service.slug).src %>" alt="<%= img(service.slug).alt %>" loading="lazy"></figure>
+
+      <h2>Frequently asked questions</h2>
+      <div class="faqs">
+        <% service.faqs.forEach(f => { %>
+        <details class="faq"><summary><%= f.q %></summary><p><%= f.a %></p></details>
+        <% }) %>
+      </div>
+
+      <h2>Where we provide <%= service.short.toLowerCase() %></h2>
+      <p>RPM Glass provides <a href="/services/<%= service.slug %>"><%= service.name.toLowerCase() %></a> throughout <a href="/service-areas">Worcester County and MetroWest</a>, including:</p>
+      <div class="chips">
+        <% serviceTowns.forEach(t => { %><a class="chip" href="/service-areas/<%= t.slug %>"><%= service.short %> in <%= t.name %></a><% }) %>
+      </div>
+    </div>
+    <aside class="article__side">
+      <div class="sidebox sidebox--form">
+        <h3>Request a free estimate</h3>
+        <% formService = service.slug %>
+        <%- include('../partials/form') %>
+      </div>
+      <div class="sidebox">
+        <h3>You may also need</h3>
+        <ul class="sidelinks">
+          <% related.forEach(r => { %><li><a href="/services/<%= r.slug %>"><%= r.name %></a></li><% }) %>
+          <li><a href="/services">All services →</a></li>
+        </ul>
+      </div>
+      <div class="sidebox sidebox--dark">
+        <h3>Emergency glass?</h3>
+        <p>Board-up and same-week replacement, 24/7.</p>
+        <a class="btn btn--accent btn--block" href="<%= business.phoneHref %>">Call <%= business.phone %></a>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<%- include('../partials/cta') %>
+<%- include('../partials/footer') %>

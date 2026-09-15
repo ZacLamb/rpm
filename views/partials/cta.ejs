@@ -1,0 +1,13 @@
+<section class="band">
+  <div class="wrap band__in">
+    <div>
+      <p class="eyebrow eyebrow--light">Ready when you are</p>
+      <h2>Need glass installed or repaired<%= (typeof ctaTown !== 'undefined' && ctaTown) ? ' in ' + ctaTown : '' %>?</h2>
+      <p>Clear pricing, a crew that shows up, and 24/7 emergency service across Central Massachusetts and MetroWest.</p>
+    </div>
+    <div class="band__actions">
+      <a class="btn btn--accent btn--lg" href="/contact#estimate">Get a Free Estimate</a>
+      <a class="btn btn--ghost btn--lg" href="<%= business.phoneHref %>">Call <%= business.phone %></a>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,27 @@
+<form class="form" action="/contact" method="post" id="estimate">
+  <input type="text" name="website" class="hp" tabindex="-1" autocomplete="off">
+  <input type="hidden" name="page" value="<%= path %>">
+  <div class="form__grid">
+    <label>Full name<input type="text" name="name" required placeholder="Jane Smith"></label>
+    <label>Phone<input type="tel" name="phone" required placeholder="(508) 555-0123"></label>
+    <label>Email<input type="email" name="email" placeholder="you@company.com"></label>
+    <label>Town<input type="text" name="town" placeholder="<%= (typeof formTown !== 'undefined' && formTown) ? formTown : 'Northborough' %>" value="<%= (typeof formTown !== 'undefined' && formTown) ? formTown : '' %>"></label>
+    <label>Service needed
+      <select name="service">
+        <option value="">Select a service</option>
+        <% services.forEach(s => { %><option value="<%= s.name %>" <%= (typeof formService !== 'undefined' && formService === s.slug) ? 'selected' : '' %>><%= s.name %></option><% }) %>
+        <option value="Other / Not sure">Other / Not sure</option>
+      </select>
+    </label>
+    <label>Property type
+      <select name="property_type">
+        <option value="Commercial">Commercial</option>
+        <option value="Residential">Residential</option>
+        <option value="Property Management">Property Management</option>
+      </select>
+    </label>
+    <label class="form__full">Tell us about the project<textarea name="message" rows="4" placeholder="What needs glass? Dimensions, photos to follow, timeline…"></textarea></label>
+  </div>
+  <p class="form__consent">By submitting you agree to be contacted by RPM Glass by phone, text or email about your request. Message &amp; data rates may apply. Reply STOP to opt out.</p>
+  <button type="submit" class="btn btn--accent btn--lg btn--block">Request My Free Estimate</button>
+</form>

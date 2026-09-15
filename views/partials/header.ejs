@@ -1,0 +1,34 @@
+<div class="topbar">
+  <div class="wrap topbar__in">
+    <span class="topbar__item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4.5 8-11a8 8 0 1 0-16 0c0 6.5 8 11 8 11z"/><circle cx="12" cy="11" r="3"/></svg> <%= business.street %>, <%= business.city %>, <%= business.state %> <%= business.zip %></span>
+    <span class="topbar__item topbar__hide"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg> <%= business.hours %></span>
+    <a class="topbar__item" href="<%= business.instagram %>" target="_blank" rel="noopener">Instagram</a>
+  </div>
+</div>
+<header class="header" id="header">
+  <div class="wrap header__in">
+    <a class="logo" href="/" aria-label="RPM Glass home">
+      <span class="logo__mark"><svg viewBox="0 0 40 40" width="40" height="40"><defs><linearGradient id="lg" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#5FD3F5"/><stop offset="1" stop-color="#1E88C7"/></linearGradient></defs><rect x="3" y="3" width="34" height="34" rx="5" fill="url(#lg)"/><path d="M9 31 31 9" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity=".9"/><path d="M9 21 21 9" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity=".5"/><path d="M19 31 31 19" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity=".5"/></svg></span>
+      <span class="logo__text">RPM <em>Glass</em></span>
+    </a>
+    <nav class="nav" id="nav" aria-label="Main">
+      <a href="/" class="<%= path === '/' ? 'is-active' : '' %>">Home</a>
+      <a href="/about" class="<%= path === '/about' ? 'is-active' : '' %>">About</a>
+      <div class="nav__dd">
+        <a href="/services" class="<%= path.startsWith('/services') ? 'is-active' : '' %>">Services <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></a>
+        <div class="nav__menu">
+          <% services.forEach(s => { %><a href="/services/<%= s.slug %>"><%= s.short %></a><% }) %>
+        </div>
+      </div>
+      <a href="/service-areas" class="<%= path.startsWith('/service-areas') ? 'is-active' : '' %>">Service Areas</a>
+      <a href="/gallery" class="<%= path === '/gallery' ? 'is-active' : '' %>">Our Work</a>
+      <a href="/contact" class="<%= path === '/contact' ? 'is-active' : '' %>">Contact</a>
+    </nav>
+    <div class="header__cta">
+      <a class="header__phone" href="<%= business.phoneHref %>"><small>Call us now</small><strong><%= business.phone %></strong></a>
+      <a class="btn btn--accent" href="/contact#estimate">Get a Free Estimate</a>
+      <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+<main id="main">

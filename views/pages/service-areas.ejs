@@ -1,0 +1,31 @@
+<%- include('../partials/head') %>
+<%- include('../partials/header') %>
+<section class="page-hero page-hero--short">
+  <div class="page-hero__media"><img src="<%= img('town').src %>" alt="<%= img('town').alt %>"></div>
+  <div class="page-hero__shade"></div>
+  <div class="wrap page-hero__in">
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <span>Service Areas</span></nav>
+    <h1>Serving Worcester County &amp; MetroWest</h1>
+    <p class="hero__sub">Based at <%= business.street %> in Northborough, our crews cover <%= towns.length %> communities across Central Massachusetts.</p>
+  </div>
+</section>
+<section class="section">
+  <div class="wrap">
+    <div class="section__head">
+      <p class="eyebrow">Towns we serve</p>
+      <h2>Pick your town for local service details</h2>
+    </div>
+    <div class="town-grid">
+      <% towns.forEach(t => { %>
+      <a class="town-card reveal" href="/service-areas/<%= t.slug %>">
+        <h3><%= t.name %>, MA</h3>
+        <p><%= t.county %> · <%= t.distance %></p>
+        <span>Glass services in <%= t.name %> →</span>
+      </a>
+      <% }) %>
+    </div>
+    <p class="center muted">Don't see your town? We travel further for commercial projects — <a href="/contact">ask us</a>.</p>
+  </div>
+</section>
+<%- include('../partials/cta') %>
+<%- include('../partials/footer') %>

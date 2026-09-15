@@ -1,0 +1,53 @@
+<%- include('../partials/head') %>
+<%- include('../partials/header') %>
+<section class="page-hero page-hero--short">
+  <div class="page-hero__media"><img src="<%= img('team').src %>" alt="<%= img('team').alt %>"></div>
+  <div class="page-hero__shade"></div>
+  <div class="wrap page-hero__in">
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <span>About</span></nav>
+    <h1>Safe and clear to the world</h1>
+    <p class="hero__sub">A Northborough glass company built on transparent pricing, 24/7 service and safety first.</p>
+  </div>
+</section>
+<section class="section">
+  <div class="wrap split">
+    <div class="split__media"><img src="<%= img('heavy-glass').src %>" alt="<%= img('heavy-glass').alt %>" loading="lazy"><div class="split__badge"><strong><%= business.yearsInBusiness %>+ yrs</strong><span>in business</span></div></div>
+    <div class="split__body">
+      <p class="eyebrow">Our story</p>
+      <h2>Built on integrity &amp; excellence</h2>
+      <p class="lead">At RPM Glass, we are dedicated to providing top-quality glass solutions tailored to the unique needs of both residential and commercial clients.</p>
+      <p>With over <%= business.yearsInBusiness %> years of industry experience, we specialize in everything from <a href="/services/heavy-glass">heavy glass installations</a> and <a href="/services/tempered-safety-glass">safety glass</a> to custom <a href="/services/storefront-doors">storefronts</a> and elegant <a href="/services/wine-rooms">wine rooms</a>. Our commitment to transparent pricing, 24/7 customer service and safety ensures every project is completed to the highest standard.</p>
+      <p>We're based at <%= business.street %> in <a href="/service-areas/northborough">Northborough</a> and work across <a href="/service-areas">Worcester County and MetroWest</a> — from <a href="/service-areas/worcester">Worcester</a> to <a href="/service-areas/framingham">Framingham</a>.</p>
+      <a class="btn btn--primary" href="/contact#estimate">Get a free estimate</a>
+    </div>
+  </div>
+</section>
+<section class="section section--ice">
+  <div class="wrap">
+    <div class="section__head"><p class="eyebrow">Our mission</p><h2>Excellence in every project</h2></div>
+    <div class="pillars pillars--4">
+      <div class="pillar"><h3>Safety</h3><p>Code-compliant glazing, insured crews and proper lifting equipment on every job.</p></div>
+      <div class="pillar"><h3>Quality</h3><p>We stand behind our workmanship and only install glass we'd put in our own homes.</p></div>
+      <div class="pillar"><h3>Communication</h3><p>You'll always know where your project stands — no surprises, no chasing.</p></div>
+      <div class="pillar"><h3>Punctuality</h3><p>Your time is valuable. We show up when we say we will and stay on schedule.</p></div>
+    </div>
+  </div>
+</section>
+<section class="section">
+  <div class="wrap split split--rev">
+    <div class="split__media"><img src="<%= img('hospital').src %>" alt="<%= img('hospital').alt %>" loading="lazy"></div>
+    <div class="split__body">
+      <p class="eyebrow">Safety &amp; compliance</p>
+      <h2>Licensed, insured and code-compliant</h2>
+      <p>From hospital corridors to home showers, we size and specify glass to Massachusetts building code and IBC safety-glazing requirements. Our team is fully insured and trained on the lifting equipment required to set heavy and oversized glass safely.</p>
+      <ul class="ticks">
+        <li>Fully insured for every project</li>
+        <li>Tempered &amp; laminated safety glazing per code</li>
+        <li>Shop drawings and permit support available</li>
+        <li>Photo-documented work orders for property managers</li>
+      </ul>
+    </div>
+  </div>
+</section>
+<%- include('../partials/cta') %>
+<%- include('../partials/footer') %>

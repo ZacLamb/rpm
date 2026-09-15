@@ -1,0 +1,25 @@
+<%- include('../partials/head') %>
+<%- include('../partials/header') %>
+<section class="page-hero page-hero--short">
+  <div class="page-hero__media"><img src="<%= img('storefront-doors').src %>" alt="<%= img('storefront-doors').alt %>"></div>
+  <div class="page-hero__shade"></div>
+  <div class="wrap page-hero__in">
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <span>Services</span></nav>
+    <h1>Glass services for every need</h1>
+    <p class="hero__sub">You won't find a more comprehensive glass service in Central Massachusetts. Commercial, residential, new install or repair.</p>
+  </div>
+</section>
+<section class="section">
+  <div class="wrap">
+    <div class="cards cards--3">
+      <% services.forEach((s, i) => { %>
+      <a class="card reveal" href="/services/<%= s.slug %>" style="--d:<%= (i % 3) * 80 %>ms">
+        <div class="card__media"><img src="<%= img(s.slug).src %>" alt="<%= img(s.slug).alt %>" loading="lazy"><% if (s.popular) { %><span class="card__tag">Most popular</span><% } %></div>
+        <div class="card__body"><h3><%= s.name %></h3><p><%= s.intro.slice(0, 140) %>…</p><span class="card__more">Learn more →</span></div>
+      </a>
+      <% }) %>
+    </div>
+  </div>
+</section>
+<%- include('../partials/cta') %>
+<%- include('../partials/footer') %>

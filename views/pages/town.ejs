@@ -1,0 +1,82 @@
+<% extraSchema = [
+  { "@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [ { "@type": "ListItem", "position": 1, "name": "Home", "item": siteUrl + "/" }, { "@type": "ListItem", "position": 2, "name": "Service Areas", "item": siteUrl + "/service-areas" }, { "@type": "ListItem", "position": 3, "name": town.name + ", MA", "item": siteUrl + "/service-areas/" + town.slug } ] },
+  { "@context": "https://schema.org", "@type": "Service", "name": "Glass Installation & Repair in " + town.name + ", MA", "provider": { "@id": siteUrl + "/#business" }, "areaServed": { "@type": "City", "name": town.name + ", MA" }, "url": siteUrl + "/service-areas/" + town.slug }
+] %>
+<%- include('../partials/head') %>
+<%- include('../partials/header') %>
+
+<section class="page-hero page-hero--short">
+  <div class="page-hero__media"><img src="<%= img('town').src %>" alt="Glass storefronts in <%= town.name %>, Massachusetts"></div>
+  <div class="page-hero__shade"></div>
+  <div class="wrap page-hero__in">
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/service-areas">Service Areas</a> / <span><%= town.name %>, MA</span></nav>
+    <h1>Glass Company in <%= town.name %>, MA</h1>
+    <p class="hero__sub">Commercial &amp; residential glass installation and repair in <%= town.name %> — <%= town.distance === 'Home base' ? 'our home base' : 'just ' + town.distance + ' from our Northborough shop' %>.</p>
+    <div class="hero__actions">
+      <a class="btn btn--accent btn--lg" href="#estimate">Free Estimate in <%= town.name %></a>
+      <a class="btn btn--ghost btn--lg" href="<%= business.phoneHref %>">Call <%= business.phone %></a>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap article">
+    <div class="article__main">
+      <p class="lead"><%= town.blurb %></p>
+      <p>RPM Glass is a full-service glass contractor based in <a href="/service-areas/northborough">Northborough, MA</a>, serving <%= town.name %> (<%= town.county %>, <%= town.zip %>) with the same team, equipment and transparent pricing we bring to every job. Whether you manage a commercial property, own a restaurant or shop, or need residential glass for your home, our <%= town.name %> customers get a crew that shows up, measures right and installs it once.</p>
+
+      <h2>Popular glass services in <%= town.name %></h2>
+      <div class="mini-cards">
+        <% featured.forEach(s => { %>
+        <a class="mini-card" href="/services/<%= s.slug %>">
+          <img src="<%= img(s.slug).src %>" alt="<%= s.name %> in <%= town.name %>, MA" loading="lazy">
+          <div><h3><%= s.name %></h3><p><%= s.tagline %></p><span>Learn more →</span></div>
+        </a>
+        <% }) %>
+      </div>
+
+      <h2>All glass services available in <%= town.name %>, MA</h2>
+      <ul class="ticks ticks--2col">
+        <% services.forEach(s => { %><li><a href="/services/<%= s.slug %>"><%= s.name %></a></li><% }) %>
+      </ul>
+
+      <h2>Why <%= town.name %> businesses and homeowners choose RPM Glass</h2>
+      <ul class="ticks">
+        <li><strong>Local &amp; fast.</strong> <%= town.distance === 'Home base' ? 'We\'re based right here in ' + town.name + '.' : 'Our shop is about ' + town.distance + ' from ' + town.name + ', so measures, installs and emergency calls happen quickly.' %></li>
+        <li><strong>Transparent pricing.</strong> Itemized estimates with no hidden fees — the number you approve is the number you pay.</li>
+        <li><strong>24/7 emergency service.</strong> Broken storefront in <%= town.name %> at 2 AM? We board up and replace.</li>
+        <li><strong>One crew, start to finish.</strong> Measurement, fabrication, installation and service from the same team.</li>
+        <li><strong>Licensed &amp; insured</strong> in Massachusetts, with code-compliant safety glazing on every job.</li>
+      </ul>
+
+      <h2>Frequently asked questions — <%= town.name %></h2>
+      <div class="faqs">
+        <details class="faq"><summary>Do you offer free estimates in <%= town.name %>?</summary><p>Yes. We provide free on-site measurement and itemized estimates for commercial and residential glass projects throughout <%= town.name %> and <%= town.county %>.</p></details>
+        <details class="faq"><summary>How quickly can you replace broken glass in <%= town.name %>?</summary><p>Emergency board-up is typically same day. Standard tempered replacement glass is usually installed within days; custom insulated units take one to two weeks.</p></details>
+        <details class="faq"><summary>Do you work with property managers in <%= town.name %>?</summary><p>Absolutely — we service multi-location portfolios with photo-documented work orders, building-wide glass surveys and priority response.</p></details>
+      </div>
+
+      <h2>Nearby areas we also serve</h2>
+      <div class="chips">
+        <% nearby.forEach(n => { %><a class="chip" href="/service-areas/<%= n.slug %>"><%= n.name %>, MA</a><% }) %>
+        <a class="chip chip--outline" href="/service-areas">All service areas →</a>
+      </div>
+    </div>
+    <aside class="article__side">
+      <div class="sidebox sidebox--form">
+        <h3>Free estimate in <%= town.name %></h3>
+        <% formTown = town.name %>
+        <%- include('../partials/form') %>
+      </div>
+      <div class="sidebox sidebox--dark">
+        <h3>Emergency glass in <%= town.name %>?</h3>
+        <p>Board-up and same-week replacement, 24/7.</p>
+        <a class="btn btn--accent btn--block" href="<%= business.phoneHref %>">Call <%= business.phone %></a>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<% ctaTown = town.name %>
+<%- include('../partials/cta') %>
+<%- include('../partials/footer') %>

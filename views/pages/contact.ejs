@@ -1,0 +1,31 @@
+<%- include('../partials/head') %>
+<%- include('../partials/header') %>
+<section class="page-hero page-hero--short">
+  <div class="page-hero__media"><img src="<%= img('commercial-doors').src %>" alt="<%= img('commercial-doors').alt %>"></div>
+  <div class="page-hero__shade"></div>
+  <div class="wrap page-hero__in">
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <span>Contact</span></nav>
+    <h1>Let's get in touch</h1>
+    <p class="hero__sub">Free estimates. Fast replies. 24/7 for emergencies.</p>
+  </div>
+</section>
+<section class="section">
+  <div class="wrap split split--form">
+    <div class="split__body">
+      <% if (sent) { %><div class="notice notice--ok"><strong>Thanks — we got it.</strong> Someone from RPM Glass will reach out shortly. For emergencies, call us now.</div><% } %>
+      <% if (error) { %><div class="notice notice--err"><strong>Something went wrong.</strong> Please call us at <a href="<%= business.phoneHref %>"><%= business.phone %></a>.</div><% } %>
+      <p class="eyebrow">Contact RPM Glass</p>
+      <h2>Tell us what you need</h2>
+      <ul class="contact-list">
+        <li><strong>Call or text</strong><a href="<%= business.phoneHref %>"><%= business.phone %></a></li>
+        <li><strong>Email</strong><a href="mailto:<%= business.email %>"><%= business.email %></a></li>
+        <li><strong>Visit</strong><span><%= business.street %>, <%= business.city %>, <%= business.state %> <%= business.zip %></span></li>
+        <li><strong>Hours</strong><span><%= business.hours %></span></li>
+        <li><strong>Instagram</strong><a href="<%= business.instagram %>" target="_blank" rel="noopener">@rpmglass_services</a></li>
+      </ul>
+      <div class="map"><iframe title="RPM Glass location map" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=160+Otis+St+Northborough+MA+01532&output=embed"></iframe></div>
+    </div>
+    <div class="split__form"><%- include('../partials/form') %></div>
+  </div>
+</section>
+<%- include('../partials/footer') %>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title><%= title %></title>
+<meta name="description" content="<%= description %>">
+<link rel="canonical" href="<%= canonical %>">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="RPM Glass">
+<meta property="og:title" content="<%= title %>">
+<meta property="og:description" content="<%= description %>">
+<meta property="og:url" content="<%= canonical %>">
+<meta property="og:image" content="<%= img('hero').src %>">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#0B1D2A">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=Archivo+Narrow:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/style.css">
+<script type="application/ld+json">
+<%- JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "GlassContractor",
+  "@id": siteUrl + "/#business",
+  "name": business.name,
+  "url": siteUrl,
+  "telephone": "+1-774-456-9850",
+  "email": business.email,
+  "image": img('hero').src,
+  "priceRange": "$$",
+  "foundingDate": String(business.founded),
+  "address": { "@type": "PostalAddress", "streetAddress": business.street, "addressLocality": business.city, "addressRegion": business.state, "postalCode": business.zip, "addressCountry": "US" },
+  "geo": { "@type": "GeoCoordinates", "latitude": business.lat, "longitude": business.lng },
+  "openingHoursSpecification": [{ "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"], "opens": "07:00", "closes": "17:00" }],
+  "sameAs": [business.instagram],
+  "areaServed": towns.map(t => ({ "@type": "City", "name": t.name + ", MA" })),
+  "hasOfferCatalog": { "@type": "OfferCatalog", "name": "Glass Services", "itemListElement": services.map(s => ({ "@type": "Offer", "itemOffered": { "@type": "Service", "name": s.name, "url": siteUrl + "/services/" + s.slug } })) }
+}) %>
+</script>
+<% if (typeof extraSchema !== 'undefined') { %>
+<script type="application/ld+json"><%- JSON.stringify(extraSchema) %></script>
+<% } %>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
