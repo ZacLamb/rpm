@@ -27,8 +27,8 @@ const business = {
   lat: 42.3195,
   lng: -71.6412,
   instagram: 'https://www.instagram.com/rpmglass_services',
-  yearsInBusiness: 12,
-  founded: 2012,
+  yearsInBusiness: 20,
+  founded: 2006,
   hours: 'Mon–Fri 7:00 AM – 5:00 PM · 24/7 Emergency Service',
 };
 
@@ -85,7 +85,7 @@ app.use((req, res, next) => {
 app.get('/', (req, res) => {
   res.render('pages/home', {
     title: 'RPM Glass | Commercial & Residential Glass Installation in Northborough, MA',
-    description: 'RPM Glass installs and repairs storefront glass, commercial doors, Herculite doors, office partitions, insulated glass and wine rooms across Central Massachusetts & MetroWest. 12+ years, 24/7 service.',
+    description: 'RPM Glass installs and repairs storefront glass, commercial doors, Herculite doors, office partitions, insulated glass and wine rooms across Central Massachusetts & MetroWest. 20+ years, 24/7 service.',
     schemaType: 'home',
   });
 });
