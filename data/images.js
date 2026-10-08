@@ -19,7 +19,7 @@ const images = {
   'wine-rooms':             { file: 'wine-room.webp', ar: '4:3',       url: CDN + 'hf_20260914_224057_3c20c46b-5cf2-48b5-9959-87218091f102.png', alt: 'Glass-enclosed restaurant wine room' },
   crew:            { file: 'crew.webp', ar: '4:3',                   url: CDN + 'hf_20260914_224057_5a28bbb1-a908-42b7-9c92-2797f3f914c3.png', alt: 'RPM Glass installation crew at a job site' },
   // Real team photo — committed in public/images/team.webp, never downloaded (no CDN url).
-  team:            { file: 'team.webp', ar: '16:9',                  url: '/images/team.webp', alt: 'The RPM Glass & Services team in front of their van' },
+  team:            { file: 'rpm-team-2026.webp', ar: '16:9',          url: '/images/rpm-team-2026.webp', alt: 'The RPM Glass & Services team in front of their van' },
   hospital:        { file: 'hospital-glass.webp', ar: '4:3',         url: CDN + 'hf_20260914_224057_c1f2cf51-9d25-43c4-80cb-5189bdc1de28.png', alt: 'Hospital corridor with glass partition walls' },
   bathroom:        { file: 'shower-mirror.webp', ar: '4:3',          url: CDN + 'hf_20260914_224057_35335e51-a2a4-4e8e-8ae5-35391047b11d.png', alt: 'Frameless shower enclosure and custom mirror' },
   basement:        { file: 'basement-gym.webp', ar: '4:3',           url: CDN + 'hf_20260914_224057_fe1df692-6ee5-4919-b0de-dee7a9306a9b.png', alt: 'Glass-walled home gym in a finished basement' },

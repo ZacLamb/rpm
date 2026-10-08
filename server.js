@@ -92,7 +92,7 @@ app.get('/', (req, res) => {
 
 app.get('/about', (req, res) => {
   res.render('pages/about', {
-    title: 'About RPM Glass | Northborough MA Glass Company Since 2012',
+    title: 'About RPM Glass | Northborough MA Glass Company Since ' + business.founded,
     description: 'Learn about RPM Glass — a Northborough, MA glass contractor serving commercial and residential clients across Worcester County and MetroWest with transparent pricing and 24/7 support.',
   });
 });
