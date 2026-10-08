@@ -1,7 +1,7 @@
 <%- include('../partials/head') %>
 <%- include('../partials/header') %>
 <section class="page-hero page-hero--short">
-  <div class="page-hero__media"><img src="<%= img('team').src %>" alt="<%= img('team').alt %>" width="<%= img('team').w %>" height="<%= img('team').h %>" width="<%= img('team').w %>" height="<%= img('team').h %>"></div>
+  <div class="page-hero__media"><img src="<%= img('crew').src %>" alt="<%= img('crew').alt %>" width="<%= img('crew').w %>" height="<%= img('crew').h %>" width="<%= img('crew').w %>" height="<%= img('crew').h %>"></div>
   <div class="page-hero__shade"></div>
   <div class="wrap page-hero__in">
     <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <span>About</span></nav>
@@ -20,6 +20,12 @@
       <p>We're based at <%= business.street %> in <a href="/service-areas/northborough">Northborough</a> and work across <a href="/service-areas">Worcester County and MetroWest</a> — from <a href="/service-areas/worcester">Worcester</a> to <a href="/service-areas/framingham">Framingham</a>.</p>
       <a class="btn btn--primary" href="/contact#estimate">Get a free estimate</a>
     </div>
+  </div>
+</section>
+<section class="section team">
+  <div class="wrap">
+    <div class="section__head"><p class="eyebrow">Meet the team</p><h2>The crew behind every install</h2><p class="lead">Four glaziers, one van, one standard. This is who shows up when you call RPM Glass.</p></div>
+    <figure class="team__photo"><img src="<%= img('team').src %>" alt="<%= img('team').alt %>" width="<%= img('team').w %>" height="<%= img('team').h %>" loading="lazy"></figure>
   </div>
 </section>
 <section class="section section--ice">

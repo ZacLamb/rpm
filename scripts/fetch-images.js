@@ -15,6 +15,7 @@ try { sharp = require('sharp'); } catch (e) { console.log('[images] sharp unavai
 async function fetchOne(key, { file, url }) {
   const dest = path.join(dir, file);
   const pngDest = dest.replace(/\.webp$/, '.png');
+  if (!/^https?:/.test(url)) return 'local file (committed)';
   if (fs.existsSync(dest) && fs.statSync(dest).size > 1000) return 'cached';
   try {
     const res = await fetch(url);
