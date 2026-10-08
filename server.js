@@ -34,7 +34,7 @@ const business = {
 
 // Resolve image → local path if downloaded, else remote Higgsfield URL
 // Bump when css/js change so the 30-day immutable cache is bypassed
-const ASSET_V = '20261008b';
+const ASSET_V = '20261008c';
 const DIMS = { '16:9': [1600, 900], '4:3': [1200, 900] };
 function img(key) {
   const entry = images[key];
