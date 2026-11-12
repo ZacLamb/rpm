@@ -318,14 +318,18 @@ let manualRunning = false;
 app.get('/admin/blog', async (req, res) => {
   if (!adminOk(req)) return res.status(404).render('pages/404', { title: 'Page Not Found | RPM Glass', description: '' });
   res.set('X-Robots-Tag', 'noindex, nofollow');
-  const [q, logs] = await Promise.all([blog.queueStatus(), blog.recentLog(25)]);
+  let q = { total: 0, used: 0, upcoming: [] }, logs = [], dbError = '';
+  try { [q, logs] = await Promise.all([blog.queueStatus(), blog.recentLog(25)]); } catch (e) { dbError = e.message; }
   const key = esc(req.query.key);
   res.send(`<!doctype html><meta charset="utf-8"><meta name="robots" content="noindex"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Blog admin</title><style>body{font:15px/1.5 system-ui,sans-serif;max-width:900px;margin:2rem auto;padding:0 1rem;color:#1E2B35}table{border-collapse:collapse;width:100%;font-size:13px}td,th{border-bottom:1px solid #ddd;padding:6px;text-align:left;vertical-align:top}.ok{color:#178a3c}.bad{color:#c0392b}button{font:inherit;padding:.6rem 1rem;background:#1E88C7;color:#fff;border:0;border-radius:6px;cursor:pointer}</style>
 <h1>RPM Glass blog</h1>
-<p>Database: <b>${blog.enabled() ? 'connected' : 'missing DATABASE_URL'}</b> · Anthropic key: <b>${process.env.ANTHROPIC_API_KEY ? 'set' : 'missing'}</b> · Model: <b>${esc(blog.MODEL)}</b> · Autopublish: <b>${process.env.BLOG_AUTOPUBLISH === 'false' ? 'off' : 'on'}</b> (daily after ${esc(process.env.BLOG_PUBLISH_HOUR || '7')}:00 ET)</p>
+<p>Database: <b>${blog.enabled() ? 'connected' : 'missing DATABASE_URL'}</b> · Anthropic key: <b>${process.env.ANTHROPIC_API_KEY ? 'set' : 'missing'}</b> · Model: <b>${esc(blog.MODEL)}</b> · Autopublish: <b>${process.env.BLOG_AUTOPUBLISH === 'false' ? 'off' : 'on'}</b></p>
+<p>Schedule: one post on most days at a varying time between ${esc(process.env.BLOG_PUBLISH_HOUR || '7')}:00 and about ${(parseInt(process.env.BLOG_PUBLISH_HOUR || '7', 10) + parseInt(process.env.BLOG_PUBLISH_WINDOW || '10', 10)) % 24}:00 ET, with about ${esc(process.env.BLOG_SKIP_PERCENT || '15')}% of days skipped.</p>
+<h2>Next 14 days</h2><p>${blog.upcomingPlan(14).map(d => `${esc(new Date(d.date + 'T12:00:00Z').toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', timeZone: 'UTC' }))}: <b>${d.skip ? '— skip —' : esc(d.label)}</b>`).join(' · ')}</p>
 <p>Published <b>${blog.list().length}</b> posts · Keyword queue: <b>${q.used}/${q.total}</b> used</p>
 ${req.query.msg ? `<p><b>${esc(req.query.msg)}</b></p>` : ''}
+${dbError ? `<p class="bad"><b>Database error: ${esc(dbError)}</b></p>` : ''}
 <form method="post" action="/admin/blog/generate"><input type="hidden" name="key" value="${key}"><button ${blog.canGenerate() ? '' : 'disabled'}>Generate the next article now</button> <small>(takes ~1–2 min; doesn't count toward today's automatic post)</small></form>
 <h2>Next up</h2><ol>${q.upcoming.map(t => `<li>${esc(t.keyword)} <small>(${esc(t.type)}${t.town ? ' · ' + esc(t.town) : ''})</small></li>`).join('')}</ol>
 <h2>Recent posts</h2><ul>${blog.list().slice(0, 15).map(p => `<li><a href="/blog/${esc(p.slug)}" target="_blank">${esc(p.title)}</a> <small>${new Date(p.published_at).toLocaleDateString('en-US')}</small></li>`).join('')}</ul>
@@ -380,6 +384,7 @@ app.use((err, req, res, next) => {
 
 app.listen(PORT, () => {
   console.log(`RPM Glass site running on :${PORT}`);
-  blog.init({ business, services, serviceBySlug, towns, townBySlug, images, siteUrl: SITE_URL })
-    .catch(e => console.error('[blog] init failed:', e.message));
+  const startBlog = () => blog.init({ business, services, serviceBySlug, towns, townBySlug, images, siteUrl: SITE_URL })
+    .catch(e => { console.error('[blog] init failed, retrying in 60s:', e.message); setTimeout(startBlog, 60 * 1000); });
+  startBlog();
 });

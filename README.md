@@ -22,13 +22,13 @@ Node/Express + EJS marketing site for RPM Glass (Northborough, MA). Built for Gi
 
 ## Daily SEO blog
 
-One article is published each day (after 7 AM ET) from the keyword queue in `data/blog-topics.js`, written by Claude, with internal links checked against real site pages. Posts live in Postgres and appear at `/blog`, `/blog/topic/<service>`, `/blog/<slug>`, in `/sitemap.xml`, and as "guides" links on service and town pages.
+Articles publish on their own on most days at a varying time between 7 AM and 5 PM ET, with roughly 1 day in 9 skipped (never two in a row) so the cadence looks natural. from the keyword queue in `data/blog-topics.js`, written by Claude, with internal links checked against real site pages. Posts live in Postgres and appear at `/blog`, `/blog/topic/<service>`, `/blog/<slug>`, in `/sitemap.xml`, and as "guides" links on service and town pages.
 
 Railway setup:
 1. Add a **Postgres** service to the project and give the site a variable `DATABASE_URL` = `${{Postgres.DATABASE_URL}}`.
 2. Add `ANTHROPIC_API_KEY`.
 3. Add `ADMIN_KEY` (any long random string) and open `https://rpmglass.com/admin/blog?key=THAT_KEY` to see the queue, log, and a "generate now" button.
 
-Optional variables: `ANTHROPIC_MODEL` (default `claude-sonnet-5-5`), `BLOG_PUBLISH_HOUR` (ET, default 7), `BLOG_POSTS_PER_DAY` (default 1), `BLOG_AUTOPUBLISH=false` to pause.
+Optional variables: `ANTHROPIC_MODEL` (default `claude-sonnet-5-5`), `BLOG_PUBLISH_HOUR` (earliest ET hour, default 7), `BLOG_PUBLISH_WINDOW` (hours after that, default 10), `BLOG_SKIP_PERCENT` (default 15), `BLOG_POSTS_PER_DAY` (default 1), `BLOG_AUTOPUBLISH=false` to pause. The admin page shows the next 14 days of the plan.
 
 Add client keywords to `CUSTOM_TOPICS` at the top of `data/blog-topics.js`; they publish first.
