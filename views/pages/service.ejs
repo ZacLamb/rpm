@@ -59,6 +59,15 @@
           <li><a href="/services">All services →</a></li>
         </ul>
       </div>
+      <% if (typeof blogPosts !== 'undefined' && blogPosts.length) { %>
+      <div class="sidebox">
+        <h3><%= service.short %> guides</h3>
+        <ul class="sidelinks">
+          <% blogPosts.forEach(p => { %><li><a href="/blog/<%= p.slug %>"><%= p.title %></a></li><% }) %>
+          <li><a href="/blog/topic/<%= service.slug %>">All <%= service.short.toLowerCase() %> articles →</a></li>
+        </ul>
+      </div>
+      <% } %>
       <div class="sidebox sidebox--dark">
         <h3>Emergency glass?</h3>
         <p>Board-up and same-week replacement, 24/7.</p>

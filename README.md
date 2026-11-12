@@ -19,3 +19,16 @@ Node/Express + EJS marketing site for RPM Glass (Northborough, MA). Built for Gi
 - Towns: `data/towns.js` (add a town → page, sitemap, footer and nav update automatically).
 - Images: `data/images.js` (swap a URL, redeploy).
 - Business info (phone, address, hours): top of `server.js`.
+
+## Daily SEO blog
+
+One article is published each day (after 7 AM ET) from the keyword queue in `data/blog-topics.js`, written by Claude, with internal links checked against real site pages. Posts live in Postgres and appear at `/blog`, `/blog/topic/<service>`, `/blog/<slug>`, in `/sitemap.xml`, and as "guides" links on service and town pages.
+
+Railway setup:
+1. Add a **Postgres** service to the project and give the site a variable `DATABASE_URL` = `${{Postgres.DATABASE_URL}}`.
+2. Add `ANTHROPIC_API_KEY`.
+3. Add `ADMIN_KEY` (any long random string) and open `https://rpmglass.com/admin/blog?key=THAT_KEY` to see the queue, log, and a "generate now" button.
+
+Optional variables: `ANTHROPIC_MODEL` (default `claude-sonnet-5-5`), `BLOG_PUBLISH_HOUR` (ET, default 7), `BLOG_POSTS_PER_DAY` (default 1), `BLOG_AUTOPUBLISH=false` to pause.
+
+Add client keywords to `CUSTOM_TOPICS` at the top of `data/blog-topics.js`; they publish first.

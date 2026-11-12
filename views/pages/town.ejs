@@ -61,6 +61,13 @@
         <% nearby.forEach(n => { %><a class="chip" href="/service-areas/<%= n.slug %>"><%= n.name %>, MA</a><% }) %>
         <a class="chip chip--outline" href="/service-areas">All service areas →</a>
       </div>
+
+      <% if (typeof blogPosts !== 'undefined' && blogPosts.length) { %>
+      <h2>Glass guides for <%= town.name %> property owners</h2>
+      <ul class="ticks">
+        <% blogPosts.forEach(p => { %><li><a href="/blog/<%= p.slug %>"><%= p.title %></a></li><% }) %>
+      </ul>
+      <% } %>
     </div>
     <aside class="article__side">
       <div class="sidebox sidebox--form">

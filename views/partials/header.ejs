@@ -22,6 +22,7 @@
       </div>
       <a href="/service-areas" class="<%= path.startsWith('/service-areas') ? 'is-active' : '' %>">Service Areas</a>
       <a href="/gallery" class="<%= path === '/gallery' ? 'is-active' : '' %>">Our Work</a>
+      <% if (typeof blogNav !== 'undefined' && blogNav) { %><a href="/blog" class="<%= path.startsWith('/blog') ? 'is-active' : '' %>">Blog</a><% } %>
       <a href="/contact" class="<%= path === '/contact' ? 'is-active' : '' %>">Contact</a>
     </nav>
     <div class="header__cta">

@@ -66,7 +66,7 @@ p{margin:0 0 1.1em} .lead{font-size:1.15rem;color:var(--ink-3)} .muted{color:var
 
 /* hero */
 .hero{position:relative;min-height:min(88vh,820px);display:flex;flex-direction:column;justify-content:flex-end;color:#fff;isolation:isolate}
-.hero__media,.page-hero__media{position:absolute;inset:0;z-index:-2}.hero__media img,.page-hero__media img{width:100%;height:100%;object-fit:cover;content-visibility:auto;animation:kenburns 18s ease-out both}
+.hero__media,.page-hero__media{position:absolute;inset:0;z-index:-2;overflow:hidden}.hero__media img,.page-hero__media img{width:100%;height:100%;object-fit:cover;content-visibility:auto;animation:kenburns 18s ease-out both}
 @keyframes kenburns{from{transform:scale(1.08)}to{transform:scale(1)}}
 .hero__shade,.page-hero__shade{position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(11,29,42,.35) 0%,rgba(11,29,42,.55) 55%,rgba(11,29,42,.95) 100%),linear-gradient(90deg,rgba(11,29,42,.6),transparent 60%)}
 .hero__in{padding-top:6rem;padding-bottom:3.5rem;max-width:var(--wrap)}
@@ -230,3 +230,16 @@ p{margin:0 0 1.1em} .lead{font-size:1.15rem;color:var(--ink-3)} .muted{color:var
   .footer__grid{grid-template-columns:1fr}.footer__towns{columns:2}.contact-list li{grid-template-columns:1fr;gap:.2rem}
   .hero__stats-in strong{font-size:1.7rem}.topbar__in{justify-content:center}
 }
+
+/* blog */
+.prose{font-size:1.04rem}
+.prose h2{font-size:clamp(1.45rem,2.4vw,1.9rem);margin-top:2.2rem}
+.prose h3{font-size:1.2rem;margin-top:1.6rem}
+.prose ul,.prose ol{padding-left:1.3rem;margin:0 0 1.2rem}.prose li{margin:.35rem 0}
+.prose a{text-decoration:underline;text-underline-offset:2px}
+.prose blockquote{margin:1.5rem 0;padding:1rem 1.3rem;border-left:4px solid var(--glass);background:var(--ice);border-radius:0 10px 10px 0;color:var(--ink-3)}
+.prose table{width:100%;border-collapse:collapse;margin:1.4rem 0;font-size:.95rem;display:block;overflow-x:auto}
+.prose th,.prose td{border:1px solid var(--line);padding:.6rem .8rem;text-align:left;vertical-align:top}.prose th{background:var(--ice);color:var(--ink)}
+.post__title{max-width:24ch;font-size:clamp(2rem,4.4vw,3.3rem)}
+.blog-filter{margin-bottom:2rem}.chip--on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.pager{display:flex;align-items:center;justify-content:center;gap:1.2rem;margin-top:2.5rem;color:var(--muted)}

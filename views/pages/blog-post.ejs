@@ -1,0 +1,77 @@
+<% const pubISO = new Date(post.published_at).toISOString(); const modISO = new Date(post.updated_at || post.published_at).toISOString();
+   const postUrl = siteUrl + '/blog/' + post.slug;
+   extraSchema = [
+  { "@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [ { "@type": "ListItem", "position": 1, "name": "Home", "item": siteUrl + "/" }, { "@type": "ListItem", "position": 2, "name": "Blog", "item": siteUrl + "/blog" }, { "@type": "ListItem", "position": 3, "name": post.title, "item": postUrl } ] },
+  { "@context": "https://schema.org", "@type": "BlogPosting", "headline": post.title, "description": post.meta_description, "image": ogImage, "datePublished": pubISO, "dateModified": modISO, "mainEntityOfPage": postUrl, "url": postUrl, "wordCount": post.word_count,
+    "author": { "@type": "Organization", "name": business.name, "url": siteUrl }, "publisher": { "@id": siteUrl + "/#business" },
+    "about": postService ? { "@type": "Service", "name": postService.name, "url": siteUrl + "/services/" + postService.slug } : undefined,
+    "spatialCoverage": postTown ? { "@type": "City", "name": postTown.name + ", MA" } : undefined }
+].concat(post.faqs && post.faqs.length ? [{ "@context": "https://schema.org", "@type": "FAQPage", "mainEntity": post.faqs.map(f => ({ "@type": "Question", "name": f.q, "acceptedAnswer": { "@type": "Answer", "text": f.a } })) }] : []) %>
+<%- include('../partials/head') %>
+<meta property="article:published_time" content="<%= pubISO %>">
+<meta property="article:modified_time" content="<%= modISO %>">
+<%- include('../partials/header') %>
+
+<section class="page-hero page-hero--short">
+  <div class="page-hero__media"><img src="<%= image.src %>" alt="<%= image.alt %>" width="<%= image.w %>" height="<%= image.h %>" fetchpriority="high"></div>
+  <div class="page-hero__shade"></div>
+  <div class="wrap page-hero__in">
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/blog">Blog</a><% if (postService) { %> / <a href="/blog/topic/<%= postService.slug %>"><%= postService.short %></a><% } %></nav>
+    <h1 class="post__title"><%= post.title %></h1>
+    <p class="hero__sub"><time datetime="<%= pubISO %>"><%= new Date(post.published_at).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'America/New_York' }) %></time> · RPM Glass team · <%= Math.max(3, Math.round((post.word_count || 900) / 225)) %> min read</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap article">
+    <article class="article__main">
+      <% if (post.excerpt) { %><p class="lead"><%= post.excerpt %></p><% } %>
+      <div class="prose"><%- post.html %></div>
+
+      <% if (post.faqs && post.faqs.length) { %>
+      <h2>Frequently asked questions</h2>
+      <div class="faqs">
+        <% post.faqs.forEach(f => { %><details class="faq"><summary><%= f.q %></summary><p><%= f.a %></p></details><% }) %>
+      </div>
+      <% } %>
+
+      <% if (postService || postTown) { %>
+      <h2>Related RPM Glass services</h2>
+      <div class="chips">
+        <% if (postService) { %><a class="chip" href="/services/<%= postService.slug %>"><%= postService.name %></a><% } %>
+        <% if (postTown) { %><a class="chip" href="/service-areas/<%= postTown.slug %>">Glass services in <%= postTown.name %>, MA</a><% } %>
+        <% if (postService && !postTown) { towns.filter(t => t.featured.includes(postService.slug)).slice(0, 4).forEach(t => { %><a class="chip" href="/service-areas/<%= t.slug %>"><%= postService.short %> in <%= t.name %></a><% }) } %>
+        <a class="chip chip--outline" href="/contact">Get a free estimate →</a>
+      </div>
+      <% } %>
+
+      <% if (relatedPosts.length) { %>
+      <h2>Keep reading</h2>
+      <div class="mini-cards">
+        <% relatedPosts.forEach(p => { const im = img(p.image_key || 'hero'); %>
+        <a class="mini-card" href="/blog/<%= p.slug %>">
+          <img src="<%= im.src %>" alt="" width="<%= im.w %>" height="<%= im.h %>" loading="lazy">
+          <div><h3><%= p.title %></h3><span>Read →</span></div>
+        </a>
+        <% }) %>
+      </div>
+      <% } %>
+    </article>
+    <aside class="article__side">
+      <div class="sidebox sidebox--form">
+        <h3>Request a free estimate</h3>
+        <% if (postTown) { formTown = postTown.name } %>
+        <%- include('../partials/form') %>
+      </div>
+      <div class="sidebox sidebox--dark">
+        <h3>Emergency glass?</h3>
+        <p>Board-up and same-week replacement, 24/7.</p>
+        <a class="btn btn--accent btn--block" href="<%= business.phoneHref %>">Call <%= business.phone %></a>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<% if (postTown) { ctaTown = postTown.name } %>
+<%- include('../partials/cta') %>
+<%- include('../partials/footer') %>

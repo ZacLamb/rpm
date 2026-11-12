@@ -7,6 +7,7 @@ const crypto = require('crypto');
 const { services, bySlug: serviceBySlug } = require('./data/services');
 const { towns, bySlug: townBySlug } = require('./data/towns');
 const images = require('./data/images');
+const blog = require('./lib/blog');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -94,7 +95,7 @@ const business = {
 
 // Resolve image → local path if downloaded, else remote Higgsfield URL
 // Bump when css/js change so the 30-day immutable cache is bypassed
-const ASSET_V = '20261008c';
+const ASSET_V = '20261111c';
 const DIMS = { '16:9': [1600, 900], '4:3': [1200, 900] };
 function img(key) {
   const entry = images[key];
@@ -142,6 +143,7 @@ app.use((req, res, next) => {
   res.locals.googleVerification = process.env.GOOGLE_SITE_VERIFICATION || '';
   res.locals.ogImage = SITE_URL + '/images/og-image.jpg';
   res.locals.formToken = makeFormToken();
+  res.locals.blogNav = blog.list().length > 0;
   next();
 });
 
@@ -178,7 +180,7 @@ app.get('/services/:slug', (req, res, next) => {
   res.render('pages/service', {
     title: `${service.name} in Northborough & Central MA | RPM Glass`,
     description: `${service.tagline} RPM Glass provides ${service.name.toLowerCase()} for commercial and residential clients across Worcester County and MetroWest. Call (774) 456-9850.`,
-    service, related, serviceTowns,
+    service, related, serviceTowns, blogPosts: blog.forService(service.slug, 4),
   });
 });
 
@@ -198,7 +200,7 @@ app.get('/service-areas/:slug', (req, res, next) => {
   res.render('pages/town', {
     title: `Glass Company in ${town.name}, MA | Storefront, Doors & Glass Repair | RPM Glass`,
     description: `Commercial & residential glass installation and repair in ${town.name}, MA. Storefronts, commercial doors, safety glass, insulated glass and 24/7 emergency service from RPM Glass, ${town.distance === 'Home base' ? 'based in' : town.distance + ' from'} ${town.name}.`,
-    town, featured, nearby,
+    town, featured, nearby, blogPosts: blog.forTown(town.slug, 4).concat(blog.list().filter(p => !p.town_slug && town.featured.includes(p.service_slug))).slice(0, 4),
   });
 });
 
@@ -257,23 +259,111 @@ app.post('/contact', async (req, res) => {
   }
 });
 
+// ---------- Blog ----------
+const PER_PAGE = 12;
+function blogIndex(req, res, next, service) {
+  if (!blog.enabled()) return next();
+  const page = Math.max(1, parseInt(req.query.page || '1', 10) || 1);
+  const all = service ? blog.list().filter(p => p.service_slug === service.slug) : blog.list();
+  if (!all.length) return next();
+  const pages = Math.ceil(all.length / PER_PAGE);
+  if (page > pages) return next();
+  const base = service ? '/blog/topic/' + service.slug : '/blog';
+  res.render('pages/blog', {
+    title: (service ? `${service.name} Articles & Guides` : 'Glass Tips, Guides & Local Insights') + (page > 1 ? ` — Page ${page}` : '') + ' | RPM Glass Blog',
+    description: service
+      ? `Guides and answers about ${service.name.toLowerCase()} for Massachusetts businesses and homeowners, from the RPM Glass team in Northborough.`
+      : 'Practical guides on storefront doors, safety glass, insulated glass, repairs and more for Central Massachusetts businesses and homeowners — from RPM Glass.',
+    canonical: SITE_URL + base + (page > 1 ? '?page=' + page : ''),
+    posts: all.slice((page - 1) * PER_PAGE, page * PER_PAGE),
+    page, pages, base, topicService: service || null,
+    blogTopics: [...new Set(blog.list().map(p => p.service_slug).filter(Boolean))],
+  });
+}
+app.get('/blog', (req, res, next) => blogIndex(req, res, next, null));
+app.get('/blog/topic/:slug', (req, res, next) => {
+  const service = serviceBySlug[req.params.slug];
+  if (!service || !blog.forService(service.slug, 1).length) return next();
+  blogIndex(req, res, next, service);
+});
+app.get('/blog/:slug', async (req, res, next) => {
+  if (!blog.enabled()) return next();
+  try {
+    const post = await blog.getPost(req.params.slug);
+    if (!post) return next();
+    const image = img(post.image_key || 'hero');
+    res.render('pages/blog-post', {
+      title: post.title + ' | RPM Glass',
+      description: post.meta_description || post.excerpt || '',
+      ogType: 'article',
+      ogImage: image.src.startsWith('http') ? image.src : SITE_URL + image.src,
+      preloadImage: image.src,
+      post, image,
+      postService: post.service_slug ? serviceBySlug[post.service_slug] : null,
+      postTown: post.town_slug ? townBySlug[post.town_slug] : null,
+      relatedPosts: blog.related(post, 4),
+      formService: post.service_slug || undefined,
+    });
+  } catch (e) { next(e); }
+});
+
+// ---------- Blog admin (set ADMIN_KEY in Railway, then open /admin/blog?key=YOUR_KEY) ----------
+const esc = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+function adminOk(req) {
+  const key = process.env.ADMIN_KEY;
+  const given = String((req.query && req.query.key) || (req.body && req.body.key) || '');
+  return key && given.length === key.length && crypto.timingSafeEqual(Buffer.from(given), Buffer.from(key));
+}
+let manualRunning = false;
+app.get('/admin/blog', async (req, res) => {
+  if (!adminOk(req)) return res.status(404).render('pages/404', { title: 'Page Not Found | RPM Glass', description: '' });
+  res.set('X-Robots-Tag', 'noindex, nofollow');
+  const [q, logs] = await Promise.all([blog.queueStatus(), blog.recentLog(25)]);
+  const key = esc(req.query.key);
+  res.send(`<!doctype html><meta charset="utf-8"><meta name="robots" content="noindex"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Blog admin</title><style>body{font:15px/1.5 system-ui,sans-serif;max-width:900px;margin:2rem auto;padding:0 1rem;color:#1E2B35}table{border-collapse:collapse;width:100%;font-size:13px}td,th{border-bottom:1px solid #ddd;padding:6px;text-align:left;vertical-align:top}.ok{color:#178a3c}.bad{color:#c0392b}button{font:inherit;padding:.6rem 1rem;background:#1E88C7;color:#fff;border:0;border-radius:6px;cursor:pointer}</style>
+<h1>RPM Glass blog</h1>
+<p>Database: <b>${blog.enabled() ? 'connected' : 'missing DATABASE_URL'}</b> · Anthropic key: <b>${process.env.ANTHROPIC_API_KEY ? 'set' : 'missing'}</b> · Model: <b>${esc(blog.MODEL)}</b> · Autopublish: <b>${process.env.BLOG_AUTOPUBLISH === 'false' ? 'off' : 'on'}</b> (daily after ${esc(process.env.BLOG_PUBLISH_HOUR || '7')}:00 ET)</p>
+<p>Published <b>${blog.list().length}</b> posts · Keyword queue: <b>${q.used}/${q.total}</b> used</p>
+${req.query.msg ? `<p><b>${esc(req.query.msg)}</b></p>` : ''}
+<form method="post" action="/admin/blog/generate"><input type="hidden" name="key" value="${key}"><button ${blog.canGenerate() ? '' : 'disabled'}>Generate the next article now</button> <small>(takes ~1–2 min; doesn't count toward today's automatic post)</small></form>
+<h2>Next up</h2><ol>${q.upcoming.map(t => `<li>${esc(t.keyword)} <small>(${esc(t.type)}${t.town ? ' · ' + esc(t.town) : ''})</small></li>`).join('')}</ol>
+<h2>Recent posts</h2><ul>${blog.list().slice(0, 15).map(p => `<li><a href="/blog/${esc(p.slug)}" target="_blank">${esc(p.title)}</a> <small>${new Date(p.published_at).toLocaleDateString('en-US')}</small></li>`).join('')}</ul>
+<h2>Log</h2><table><tr><th>When (UTC)</th><th>Status</th><th>Keyword</th><th>Detail</th></tr>${logs.map(l => `<tr><td>${new Date(l.ran_at).toISOString().slice(0, 16).replace('T', ' ')}</td><td class="${l.status === 'published' ? 'ok' : 'bad'}">${esc(l.status)}</td><td>${esc(l.keyword)}</td><td>${esc(l.message)}</td></tr>`).join('')}</table>`);
+});
+app.post('/admin/blog/generate', async (req, res) => {
+  if (!adminOk(req)) return res.status(404).send('Not found');
+  const back = msg => res.redirect('/admin/blog?key=' + encodeURIComponent(req.body.key) + '&msg=' + encodeURIComponent(msg));
+  if (manualRunning) return back('A manual generation is already running — refresh in a minute.');
+  manualRunning = true;
+  try {
+    const slug = await blog.generateOne('manual');
+    back(slug ? 'Published /blog/' + slug : 'Keyword queue is empty.');
+  } catch (e) { back('Failed: ' + e.message); }
+  finally { manualRunning = false; }
+});
+
 // ---------- SEO ----------
 app.get('/sitemap.xml', (req, res) => {
+  const posts = blog.enabled() ? blog.list() : [];
   const urls = [
     { loc: '/', p: '1.0' }, { loc: '/about', p: '0.7' }, { loc: '/services', p: '0.9' },
     { loc: '/service-areas', p: '0.8' }, { loc: '/gallery', p: '0.6' }, { loc: '/contact', p: '0.8' },
     ...services.map(s => ({ loc: '/services/' + s.slug, p: '0.9' })),
     ...towns.map(t => ({ loc: '/service-areas/' + t.slug, p: '0.7' })),
+    ...(posts.length ? [{ loc: '/blog', p: '0.7', lastmod: new Date(posts[0].published_at).toISOString().slice(0, 10) }] : []),
+    ...[...new Set(posts.map(p => p.service_slug).filter(Boolean))].map(s => ({ loc: '/blog/topic/' + s, p: '0.5', lastmod: new Date(posts.find(p => p.service_slug === s).published_at).toISOString().slice(0, 10) })),
+    ...posts.map(p => ({ loc: '/blog/' + p.slug, p: '0.6', lastmod: new Date(p.updated_at || p.published_at).toISOString().slice(0, 10) })),
   ];
   const today = new Date().toISOString().slice(0, 10);
   const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
-    urls.map(u => `  <url><loc>${SITE_URL}${u.loc}</loc><lastmod>${today}</lastmod><changefreq>monthly</changefreq><priority>${u.p}</priority></url>`).join('\n') +
+    urls.map(u => `  <url><loc>${SITE_URL}${u.loc}</loc><lastmod>${u.lastmod || today}</lastmod><changefreq>monthly</changefreq><priority>${u.p}</priority></url>`).join('\n') +
     `\n</urlset>`;
   res.type('application/xml').send(xml);
 });
 
 app.get('/robots.txt', (req, res) => {
-  res.type('text/plain').send(`User-agent: *\nAllow: /\nSitemap: ${SITE_URL}/sitemap.xml\n`);
+  res.type('text/plain').send(`User-agent: *\nAllow: /\nDisallow: /admin/\nSitemap: ${SITE_URL}/sitemap.xml\n`);
 });
 
 // Legacy anchors from the old GHL site
@@ -283,4 +373,13 @@ app.use((req, res) => {
   res.status(404).render('pages/404', { title: 'Page Not Found | RPM Glass', description: 'The page you were looking for could not be found.' });
 });
 
-app.listen(PORT, () => console.log(`RPM Glass site running on :${PORT}`));
+app.use((err, req, res, next) => {
+  console.error('[error]', err.message);
+  res.status(500).render('pages/404', { title: 'Something went wrong | RPM Glass', description: '' });
+});
+
+app.listen(PORT, () => {
+  console.log(`RPM Glass site running on :${PORT}`);
+  blog.init({ business, services, serviceBySlug, towns, townBySlug, images, siteUrl: SITE_URL })
+    .catch(e => console.error('[blog] init failed:', e.message));
+});
