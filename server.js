@@ -308,7 +308,6 @@ app.get('/blog/:slug', async (req, res, next) => {
 });
 
 // ---------- Blog admin (set ADMIN_KEY in Railway, then open /admin/blog?key=YOUR_KEY) ----------
-const esc = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 function adminOk(req) {
   const key = process.env.ADMIN_KEY;
   const given = String((req.query && req.query.key) || (req.body && req.body.key) || '');
@@ -320,30 +319,40 @@ app.get('/admin/blog', async (req, res) => {
   res.set('X-Robots-Tag', 'noindex, nofollow');
   let q = { total: 0, used: 0, upcoming: [] }, logs = [], dbError = '';
   try { [q, logs] = await Promise.all([blog.queueStatus(), blog.recentLog(25)]); } catch (e) { dbError = e.message; }
-  const key = esc(req.query.key);
-  res.send(`<!doctype html><meta charset="utf-8"><meta name="robots" content="noindex"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Blog admin</title><style>body{font:15px/1.5 system-ui,sans-serif;max-width:900px;margin:2rem auto;padding:0 1rem;color:#1E2B35}table{border-collapse:collapse;width:100%;font-size:13px}td,th{border-bottom:1px solid #ddd;padding:6px;text-align:left;vertical-align:top}.ok{color:#178a3c}.bad{color:#c0392b}button{font:inherit;padding:.6rem 1rem;background:#1E88C7;color:#fff;border:0;border-radius:6px;cursor:pointer}</style>
-<h1>RPM Glass blog</h1>
-<p>Database: <b>${blog.enabled() ? 'connected' : 'missing DATABASE_URL'}</b> · Anthropic key: <b>${process.env.ANTHROPIC_API_KEY ? 'set' : 'missing'}</b> · Model: <b>${esc(blog.MODEL)}</b> · Autopublish: <b>${process.env.BLOG_AUTOPUBLISH === 'false' ? 'off' : 'on'}</b></p>
-<p>Schedule: one post on most days at a varying time between ${esc(process.env.BLOG_PUBLISH_HOUR || '7')}:00 and about ${(parseInt(process.env.BLOG_PUBLISH_HOUR || '7', 10) + parseInt(process.env.BLOG_PUBLISH_WINDOW || '10', 10)) % 24}:00 ET, with about ${esc(process.env.BLOG_SKIP_PERCENT || '15')}% of days skipped.</p>
-<h2>Next 14 days</h2><p>${blog.upcomingPlan(14).map(d => `${esc(new Date(d.date + 'T12:00:00Z').toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', timeZone: 'UTC' }))}: <b>${d.skip ? '— skip —' : esc(d.label)}</b>`).join(' · ')}</p>
-<p>Published <b>${blog.list().length}</b> posts · Keyword queue: <b>${q.used}/${q.total}</b> used</p>
-${req.query.msg ? `<p><b>${esc(req.query.msg)}</b></p>` : ''}
-${dbError ? `<p class="bad"><b>Database error: ${esc(dbError)}</b></p>` : ''}
-<form method="post" action="/admin/blog/generate"><input type="hidden" name="key" value="${key}"><button ${blog.canGenerate() ? '' : 'disabled'}>Generate the next article now</button> <small>(takes ~1–2 min; doesn't count toward today's automatic post)</small></form>
-<h2>Next up</h2><ol>${q.upcoming.map(t => `<li>${esc(t.keyword)} <small>(${esc(t.type)}${t.town ? ' · ' + esc(t.town) : ''})</small></li>`).join('')}</ol>
-<h2>Recent posts</h2><ul>${blog.list().slice(0, 15).map(p => `<li><a href="/blog/${esc(p.slug)}" target="_blank">${esc(p.title)}</a> <small>${new Date(p.published_at).toLocaleDateString('en-US')}</small></li>`).join('')}</ul>
-<h2>Log</h2><table><tr><th>When (UTC)</th><th>Status</th><th>Keyword</th><th>Detail</th></tr>${logs.map(l => `<tr><td>${new Date(l.ran_at).toISOString().slice(0, 16).replace('T', ' ')}</td><td class="${l.status === 'published' ? 'ok' : 'bad'}">${esc(l.status)}</td><td>${esc(l.keyword)}</td><td>${esc(l.message)}</td></tr>`).join('')}</table>`);
+  const hour = parseInt(process.env.BLOG_PUBLISH_HOUR || '7', 10);
+  const windowH = parseInt(process.env.BLOG_PUBLISH_WINDOW || '10', 10);
+  const fmtHour = h => `${((h % 24) + 11) % 12 + 1} ${(h % 24) < 12 ? 'AM' : 'PM'}`;
+  const etFmt = (d, opts) => new Date(d).toLocaleString('en-US', { timeZone: 'America/New_York', ...opts });
+  res.render('admin/blog', {
+    key: String(req.query.key || ''),
+    msg: String(req.query.msg || ''),
+    msgOk: req.query.ok === '1',
+    dbError,
+    status: {
+      db: blog.enabled() && !dbError,
+      apiKey: Boolean(process.env.ANTHROPIC_API_KEY),
+      autopublish: process.env.BLOG_AUTOPUBLISH !== 'false',
+      model: blog.MODEL,
+      canGenerate: blog.canGenerate(),
+    },
+    scheduleText: `Most days, at a different time between ${fmtHour(hour)} and ${fmtHour(hour + windowH)} ET. About ${process.env.BLOG_SKIP_PERCENT || '15'}% of days are skipped, never two in a row.`,
+    plan: blog.upcomingPlan(14),
+    queue: q,
+    posts: blog.list().slice(0, 12),
+    totalPosts: blog.list().length,
+    logs,
+    etFmt,
+  });
 });
 app.post('/admin/blog/generate', async (req, res) => {
   if (!adminOk(req)) return res.status(404).send('Not found');
-  const back = msg => res.redirect('/admin/blog?key=' + encodeURIComponent(req.body.key) + '&msg=' + encodeURIComponent(msg));
-  if (manualRunning) return back('A manual generation is already running — refresh in a minute.');
+  const back = (msg, ok) => res.redirect('/admin/blog?key=' + encodeURIComponent(req.body.key) + '&ok=' + (ok ? 1 : 0) + '&msg=' + encodeURIComponent(msg));
+  if (manualRunning) return back('A generation is already running. Refresh in a minute.', false);
   manualRunning = true;
   try {
     const slug = await blog.generateOne('manual');
-    back(slug ? 'Published /blog/' + slug : 'Keyword queue is empty.');
-  } catch (e) { back('Failed: ' + e.message); }
+    back(slug ? 'Published /blog/' + slug : 'Keyword queue is empty.', Boolean(slug));
+  } catch (e) { back('Failed: ' + e.message, false); }
   finally { manualRunning = false; }
 });
 

@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Blog Engine · RPM Glass</title>
+<link rel="icon" href="/favicon.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Archivo+Narrow:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0B1D2A;--ink-2:#12293A;--ink-3:#1B3A50;--glass:#2FA7D6;--glass-2:#5FD3F5;--glass-deep:#1E88C7;
+  --ice:#EEF6FA;--ice-2:#DCEDF5;--line:#D5E3EB;--text:#1E2B35;--muted:#5B6F7E;--bg:#F4F8FB;--card:#fff;
+  --ok:#178A4C;--ok-bg:#E3F5EA;--bad:#C0392B;--bad-bg:#FBE9E7;--warn:#9A6A00;--warn-bg:#FFF4D6;
+  --radius:14px;--shadow:0 1px 2px rgba(11,29,42,.06),0 8px 24px -12px rgba(11,29,42,.18);
+  --font:'Archivo',ui-sans-serif,system-ui,sans-serif;--display:'Archivo Narrow','Archivo',sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:var(--font);color:var(--text);background:var(--bg);font-size:15px;line-height:1.5}
+a{color:var(--glass-deep);text-decoration:none}a:hover{text-decoration:underline}
+h1,h2,h3{font-family:var(--display);color:var(--ink);margin:0;letter-spacing:-.01em}
+.top{background:var(--ink);color:#C9DBE6}
+.top__in,.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+.top__in{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:64px}
+.brand{display:flex;align-items:center;gap:12px;color:#fff;font-weight:700}
+.brand img{width:34px;height:34px}
+.brand small{display:block;color:var(--glass-2);font-family:var(--display);text-transform:uppercase;letter-spacing:.14em;font-size:.68rem;font-weight:700}
+.top a.link{color:#fff;border:1px solid rgba(255,255,255,.3);padding:8px 14px;border-radius:8px;font-weight:600;font-size:.88rem;white-space:nowrap}
+.top a.link:hover{background:rgba(255,255,255,.08);text-decoration:none}
+main{padding:40px 20px 60px}
+.head{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:22px}
+.head h1{font-size:2.1rem}
+.head p{margin:4px 0 0;color:var(--muted)}
+.flash{border-radius:12px;padding:14px 16px;margin-bottom:20px;font-weight:600;display:flex;gap:10px;align-items:flex-start;word-break:break-word}
+.flash--ok{background:var(--ok-bg);color:var(--ok)}.flash--bad{background:var(--bad-bg);color:var(--bad)}
+.grid{display:grid;gap:16px}
+.status{grid-template-columns:repeat(4,minmax(0,1fr));margin-bottom:16px}
+.stats{grid-template-columns:repeat(4,minmax(0,1fr));margin-bottom:16px}
+.cols{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px 20px;min-width:0}
+.card h2{font-size:1.15rem;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.card h2 small{font-family:var(--font);font-weight:500;color:var(--muted);font-size:.82rem;letter-spacing:0}
+.kv{display:flex;align-items:center;gap:12px}
+.kv .label{font-size:.72rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);font-weight:700}
+.kv .val{font-weight:700;color:var(--ink);overflow-wrap:anywhere}
+.dot{width:10px;height:10px;border-radius:50%;flex:none;box-shadow:0 0 0 4px var(--ok-bg);background:var(--ok)}
+.dot--bad{background:var(--bad);box-shadow:0 0 0 4px var(--bad-bg)}
+.dot--off{background:var(--warn);box-shadow:0 0 0 4px var(--warn-bg)}
+.stat .num{font-family:var(--display);font-size:2rem;font-weight:700;color:var(--ink);line-height:1.1}
+.stat .label{font-size:.72rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);font-weight:700;margin-bottom:6px}
+.stat .sub{color:var(--muted);font-size:.85rem;margin-top:2px}
+.bar{height:6px;background:var(--ice-2);border-radius:99px;margin-top:10px;overflow:hidden}
+.bar span{display:block;height:100%;background:linear-gradient(90deg,var(--glass-2),var(--glass-deep));border-radius:99px}
+.sched{margin-bottom:16px}
+.sched p{margin:0 0 14px;color:var(--muted)}
+.days{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px}
+.day{border:1px solid var(--line);border-radius:10px;padding:10px 8px;text-align:center;background:#fff}
+.day .wd{font-size:.7rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);font-weight:700}
+.day .dt{font-family:var(--display);font-weight:700;color:var(--ink);font-size:1.05rem}
+.day .tm{font-size:.8rem;font-weight:600;color:var(--glass-deep);margin-top:2px}
+.day--skip{background:repeating-linear-gradient(135deg,#F6F9FB,#F6F9FB 6px,#EEF3F6 6px,#EEF3F6 12px)}
+.day--skip .tm{color:var(--muted)}
+.day--today{border-color:var(--glass-deep);box-shadow:inset 0 0 0 1px var(--glass-deep)}
+.day--today .wd{color:var(--glass-deep)}
+.gen{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:16px}
+.gen p{margin:0;color:var(--muted);flex:1;min-width:220px}
+.btn{font:inherit;font-family:var(--display);text-transform:uppercase;letter-spacing:.05em;font-weight:700;font-size:.9rem;display:inline-flex;align-items:center;gap:10px;padding:13px 20px;border:0;border-radius:10px;color:#fff;cursor:pointer;background:linear-gradient(135deg,var(--glass-2),var(--glass-deep));box-shadow:0 10px 22px -10px rgba(47,167,214,.9)}
+.btn:hover{filter:brightness(1.05)}
+.btn[disabled]{opacity:.55;cursor:not-allowed;box-shadow:none}
+.spin{width:16px;height:16px;border:2px solid rgba(255,255,255,.45);border-top-color:#fff;border-radius:50%;animation:s .8s linear infinite;display:none}
+.is-busy .spin{display:inline-block}
+@keyframes s{to{transform:rotate(360deg)}}
+.list{list-style:none;margin:0;padding:0}
+.list li{display:flex;align-items:baseline;gap:10px;padding:9px 0;border-bottom:1px solid var(--ice-2)}
+.list li:last-child{border:0}
+.list .n{font-family:var(--display);font-weight:700;color:var(--muted);width:22px;flex:none;text-align:right}
+.list .t{flex:1;min-width:0;overflow-wrap:anywhere}
+.list .d{color:var(--muted);font-size:.82rem;white-space:nowrap}
+.tag{display:inline-block;font-size:.66rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;padding:3px 7px;border-radius:6px;background:var(--ice);color:var(--ink-3);white-space:nowrap}
+.tag--local{background:#E5F4FB;color:var(--glass-deep)}
+.tag--ok{background:var(--ok-bg);color:var(--ok)}.tag--bad{background:var(--bad-bg);color:var(--bad)}.tag--muted{background:#F0F3F5;color:var(--muted)}
+.empty{color:var(--muted);padding:12px 0;margin:0}
+.tablewrap{overflow-x:auto;margin:0 -20px;padding:0 20px}
+table{width:100%;border-collapse:collapse;font-size:.88rem;min-width:620px}
+th{text-align:left;font-size:.7rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);padding:8px 10px;border-bottom:1px solid var(--line)}
+td{padding:10px;border-bottom:1px solid var(--ice-2);vertical-align:top}
+td.when{white-space:nowrap;color:var(--muted)}
+td.detail{overflow-wrap:anywhere}
+.log{margin-top:16px}
+@media (max-width:900px){.status,.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.cols{grid-template-columns:1fr}}
+@media (max-width:560px){.days{grid-template-columns:repeat(4,minmax(0,1fr))}.head h1{font-size:1.7rem}.stat .num{font-size:1.6rem}.top a.link{padding:7px 10px}}
+</style>
+</head>
+<body>
+<%
+  const todayEt = new Date().toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
+  const remaining = Math.max(0, queue.total - queue.used);
+  const pct = queue.total ? Math.round(queue.used / queue.total * 100) : 0;
+  const daysLeft = Math.round(remaining * 1.12); // ~1 in 9 days skipped
+  const lastPost = posts[0];
+  const trig = m => /· manual$/.test(m || '') ? 'manual' : (/· auto$/.test(m || '') ? 'auto' : '');
+  const clean = m => String(m || '').replace(/ · (manual|auto)$/, '');
+%>
+<header class="top">
+  <div class="top__in">
+    <div class="brand"><img src="/images/logo-icon.png" alt=""><div><small>RPM Glass</small>Blog engine</div></div>
+    <a class="link" href="/blog" target="_blank" rel="noopener">View blog ↗</a>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="head">
+    <div>
+      <h1>Daily SEO articles</h1>
+      <p><%= scheduleText %></p>
+    </div>
+  </div>
+
+  <% if (msg) { %><div class="flash <%= msgOk ? 'flash--ok' : 'flash--bad' %>"><span><%= msgOk ? '✓' : '!' %></span><span><%= msg %></span></div><% } %>
+  <% if (dbError) { %><div class="flash flash--bad"><span>!</span><span>Database error: <%= dbError %></span></div><% } %>
+
+  <section class="grid status">
+    <div class="card kv"><span class="dot <%= status.db ? '' : 'dot--bad' %>"></span><div><div class="label">Database</div><div class="val"><%= status.db ? 'Connected' : 'Not connected' %></div></div></div>
+    <div class="card kv"><span class="dot <%= status.apiKey ? '' : 'dot--bad' %>"></span><div><div class="label">Anthropic key</div><div class="val"><%= status.apiKey ? 'Set' : 'Missing' %></div></div></div>
+    <div class="card kv"><span class="dot"></span><div><div class="label">Model</div><div class="val"><%= status.model %></div></div></div>
+    <div class="card kv"><span class="dot <%= status.autopublish ? '' : 'dot--off' %>"></span><div><div class="label">Autopublish</div><div class="val"><%= status.autopublish ? 'On' : 'Paused' %></div></div></div>
+  </section>
+
+  <section class="grid stats">
+    <div class="card stat"><div class="label">Published</div><div class="num"><%= totalPosts %></div><div class="sub">articles live</div></div>
+    <div class="card stat"><div class="label">Keyword queue</div><div class="num"><%= queue.used %><span style="font-size:1.1rem;color:var(--muted)"> / <%= queue.total %></span></div><div class="bar"><span style="width:<%= pct %>%"></span></div></div>
+    <div class="card stat"><div class="label">Topics left</div><div class="num"><%= remaining %></div><div class="sub">≈ <%= daysLeft >= 60 ? Math.round(daysLeft / 30) + ' months' : daysLeft + ' days' %> of posts</div></div>
+    <div class="card stat"><div class="label">Last published</div><div class="num" style="font-size:1.35rem;padding-top:6px"><%= lastPost ? etFmt(lastPost.published_at, { month: 'short', day: 'numeric' }) : '—' %></div><div class="sub"><%= lastPost ? etFmt(lastPost.published_at, { hour: 'numeric', minute: '2-digit' }) + ' ET' : 'nothing yet' %></div></div>
+  </section>
+
+  <section class="card sched">
+    <h2>Next 14 days <small>times in Eastern</small></h2>
+    <div class="days">
+      <% plan.forEach(d => { const dt = new Date(d.date + 'T12:00:00Z'); %>
+      <div class="day <%= d.skip ? 'day--skip' : '' %> <%= d.date === todayEt ? 'day--today' : '' %>">
+        <div class="wd"><%= d.date === todayEt ? 'Today' : dt.toLocaleDateString('en-US', { weekday: 'short', timeZone: 'UTC' }) %></div>
+        <div class="dt"><%= dt.toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' }) %></div>
+        <div class="tm"><%= d.skip ? 'Skip' : d.label.replace(' ET', '') %></div>
+      </div>
+      <% }) %>
+    </div>
+  </section>
+
+  <section class="card gen">
+    <form method="post" action="/admin/blog/generate" id="genForm">
+      <input type="hidden" name="key" value="<%= key %>">
+      <button class="btn" id="genBtn" <%= status.canGenerate ? '' : 'disabled' %>><span class="spin"></span><span id="genLabel">Generate next article now</span></button>
+    </form>
+    <p>Writes and publishes the next topic in the queue right away. It takes 1–2 minutes and doesn't replace today's automatic post.</p>
+  </section>
+
+  <section class="grid cols">
+    <div class="card">
+      <h2>Next up <small><%= remaining %> remaining</small></h2>
+      <% if (queue.upcoming.length) { %>
+      <ol class="list">
+        <% queue.upcoming.forEach((t, i) => { %>
+        <li><span class="n"><%= i + 1 %></span><span class="t"><%= t.keyword %></span><span class="tag <%= t.type === 'local' ? 'tag--local' : '' %>"><%= t.type === 'local' ? 'Local' : 'Guide' %></span></li>
+        <% }) %>
+      </ol>
+      <% } else { %><p class="empty">The queue is empty. Add topics in data/blog-topics.js.</p><% } %>
+    </div>
+    <div class="card">
+      <h2>Recent posts <small><a href="/blog" target="_blank" rel="noopener">All →</a></small></h2>
+      <% if (posts.length) { %>
+      <ul class="list">
+        <% posts.forEach(p => { %>
+        <li><span class="t"><a href="/blog/<%= p.slug %>" target="_blank" rel="noopener"><%= p.title %></a></span><span class="d"><%= etFmt(p.published_at, { month: 'short', day: 'numeric' }) %></span></li>
+        <% }) %>
+      </ul>
+      <% } else { %><p class="empty">No posts yet. The first one will show up here.</p><% } %>
+    </div>
+  </section>
+
+  <section class="card log">
+    <h2>Activity log <small>last 25 runs</small></h2>
+    <% if (logs.length) { %>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>When (ET)</th><th>Status</th><th>Keyword</th><th>Detail</th></tr></thead>
+        <tbody>
+        <% logs.forEach(l => { const t = trig(l.message); %>
+        <tr>
+          <td class="when"><%= etFmt(l.ran_at, { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }) %></td>
+          <td><span class="tag <%= l.status === 'published' ? 'tag--ok' : (l.status === 'failed' ? 'tag--bad' : 'tag--muted') %>"><%= l.status %></span><% if (t) { %> <span class="tag tag--muted"><%= t %></span><% } %></td>
+          <td><%= l.keyword || '—' %></td>
+          <td class="detail"><% if (l.status === 'published' && /^\/blog\//.test(l.message)) { const parts = clean(l.message).split(' · '); %><a href="<%= parts[0] %>" target="_blank" rel="noopener"><%= parts[0] %></a><%= parts.length > 1 ? ' · ' + parts.slice(1).join(' · ') : '' %><% } else { %><%= clean(l.message) %><% } %></td>
+        </tr>
+        <% }) %>
+        </tbody>
+      </table>
+    </div>
+    <% } else { %><p class="empty">Nothing has run yet.</p><% } %>
+  </section>
+</main>
+
+<script>
+  document.getElementById('genForm').addEventListener('submit', function () {
+    var b = document.getElementById('genBtn');
+    b.disabled = true; b.classList.add('is-busy');
+    document.getElementById('genLabel').textContent = 'Writing article… 1–2 min';
+  });
+</script>
+</body>
+</html>
