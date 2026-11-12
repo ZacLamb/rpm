@@ -119,14 +119,8 @@ td.detail{overflow-wrap:anywhere}
   </div>
 
   <% if (msg) { %><div class="flash <%= msgOk ? 'flash--ok' : 'flash--bad' %>"><span><%= msgOk ? '✓' : '!' %></span><span><%= msg %></span></div><% } %>
-  <% if (dbError) { %><div class="flash flash--bad"><span>!</span><span>Database error: <%= dbError %></span></div><% } %>
+  <% if (dbError || !status.canGenerate) { %><div class="flash flash--bad"><span>!</span><span>The blog isn't publishing right now. Let your web team know.<% if (debug && dbError) { %> (<%= dbError %>)<% } %></span></div><% } %>
 
-  <section class="grid status">
-    <div class="card kv"><span class="dot <%= status.db ? '' : 'dot--bad' %>"></span><div><div class="label">Database</div><div class="val"><%= status.db ? 'Connected' : 'Not connected' %></div></div></div>
-    <div class="card kv"><span class="dot <%= status.apiKey ? '' : 'dot--bad' %>"></span><div><div class="label">Anthropic key</div><div class="val"><%= status.apiKey ? 'Set' : 'Missing' %></div></div></div>
-    <div class="card kv"><span class="dot"></span><div><div class="label">Model</div><div class="val"><%= status.model %></div></div></div>
-    <div class="card kv"><span class="dot <%= status.autopublish ? '' : 'dot--off' %>"></span><div><div class="label">Autopublish</div><div class="val"><%= status.autopublish ? 'On' : 'Paused' %></div></div></div>
-  </section>
 
   <section class="grid stats">
     <div class="card stat"><div class="label">Published</div><div class="num"><%= totalPosts %></div><div class="sub">articles live</div></div>
@@ -150,7 +144,7 @@ td.detail{overflow-wrap:anywhere}
 
   <section class="card gen">
     <form method="post" action="/admin/blog/generate" id="genForm">
-      <input type="hidden" name="key" value="<%= key %>">
+      <input type="hidden" name="key" value="<%= key %>"><% if (debug) { %><input type="hidden" name="debug" value="1"><% } %>
       <button class="btn" id="genBtn" <%= status.canGenerate ? '' : 'disabled' %>><span class="spin"></span><span id="genLabel">Generate next article now</span></button>
     </form>
     <p>Writes and publishes the next topic in the queue right away. It takes 1–2 minutes and doesn't replace today's automatic post.</p>
@@ -191,7 +185,7 @@ td.detail{overflow-wrap:anywhere}
           <td class="when"><%= etFmt(l.ran_at, { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }) %></td>
           <td><span class="tag <%= l.status === 'published' ? 'tag--ok' : (l.status === 'failed' ? 'tag--bad' : 'tag--muted') %>"><%= l.status %></span><% if (t) { %> <span class="tag tag--muted"><%= t %></span><% } %></td>
           <td><%= l.keyword || '—' %></td>
-          <td class="detail"><% if (l.status === 'published' && /^\/blog\//.test(l.message)) { const parts = clean(l.message).split(' · '); %><a href="<%= parts[0] %>" target="_blank" rel="noopener"><%= parts[0] %></a><%= parts.length > 1 ? ' · ' + parts.slice(1).join(' · ') : '' %><% } else { %><%= clean(l.message) %><% } %></td>
+          <td class="detail"><% if (l.status === 'published' && /^\/blog\//.test(l.message)) { const parts = clean(l.message).split(' · '); %><a href="<%= parts[0] %>" target="_blank" rel="noopener"><%= parts[0] %></a><%= parts.length > 1 ? ' · ' + parts.slice(1).join(' · ') : '' %><% } else if (l.status === 'failed' && !debug) { %>Couldn't finish this article. It will try again automatically.<% } else { %><%= clean(l.message) %><% } %></td>
         </tr>
         <% }) %>
         </tbody>

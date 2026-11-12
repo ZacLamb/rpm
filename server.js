@@ -327,6 +327,7 @@ app.get('/admin/blog', async (req, res) => {
     key: String(req.query.key || ''),
     msg: String(req.query.msg || ''),
     msgOk: req.query.ok === '1',
+    debug: req.query.debug === '1', // add &debug=1 to the URL to see raw error details
     dbError,
     status: {
       db: blog.enabled() && !dbError,
@@ -346,13 +347,13 @@ app.get('/admin/blog', async (req, res) => {
 });
 app.post('/admin/blog/generate', async (req, res) => {
   if (!adminOk(req)) return res.status(404).send('Not found');
-  const back = (msg, ok) => res.redirect('/admin/blog?key=' + encodeURIComponent(req.body.key) + '&ok=' + (ok ? 1 : 0) + '&msg=' + encodeURIComponent(msg));
+  const back = (msg, ok) => res.redirect('/admin/blog?key=' + encodeURIComponent(req.body.key) + (req.body.debug === '1' ? '&debug=1' : '') + '&ok=' + (ok ? 1 : 0) + '&msg=' + encodeURIComponent(msg));
   if (manualRunning) return back('A generation is already running. Refresh in a minute.', false);
   manualRunning = true;
   try {
     const slug = await blog.generateOne('manual');
     back(slug ? 'Published /blog/' + slug : 'Keyword queue is empty.', Boolean(slug));
-  } catch (e) { back('Failed: ' + e.message, false); }
+  } catch (e) { back(req.body.debug === '1' ? 'Failed: ' + e.message : "Couldn't finish that article. Please try again in a few minutes.", false); }
   finally { manualRunning = false; }
 });
 
