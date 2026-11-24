@@ -1,0 +1,75 @@
+<%- include('partials/header', { pageTitle: 'Services', pageDescription: 'Explore our comprehensive glass services including heavy glass, safety glass, commercial doors, storefronts, and more.' }) %>
+
+  <section class="page-hero">
+    <div class="container">
+      <nav class="breadcrumb">
+        <a href="/">Home</a>
+        <span>/</span>
+        <span>Services</span>
+      </nav>
+      <h1>Our Services</h1>
+      <p class="tagline">Comprehensive Glass Solutions</p>
+      <p>From heavy glass installations to commercial repairs, we offer a full range of glass services for residential and commercial clients.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="services-grid">
+        <% services.forEach(service => { %>
+          <a href="/services/<%= service.slug %>" class="service-card">
+            <div class="service-icon">🔷</div>
+            <h3><%= service.name %></h3>
+            <p><%= service.tagline %></p>
+            <span class="service-link">Learn More →</span>
+          </a>
+        <% }); %>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-dark">
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-content">
+          <h2>No Matter the Job Size</h2>
+          <p>From hospital-grade and commercial projects to side jobs and home services, we are here to serve. Our experienced team handles projects of all sizes with the same level of professionalism and attention to detail.</p>
+          <ul class="features-list" style="grid-template-columns: 1fr;">
+            <li>Commercial storefronts and entrances</li>
+            <li>Office partitions and sliders</li>
+            <li>Residential glass installations</li>
+            <li>Restaurant and hospitality glass</li>
+            <li>Emergency repair services</li>
+            <li>Custom fabrication and design</li>
+          </ul>
+          <a href="/contact" class="cta-button" style="margin-top: 20px;">Request a Quote</a>
+        </div>
+        <div class="about-image">
+          <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/gqZLaxiRnT93o0AopLh3/media/4a62afd2-fc89-40de-8a6f-a284dc0ead7a.jpeg" alt="Bathroom Vanity Mirror">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <h2>Can't Find What You Need?</h2>
+        <p>We handle a wide variety of glass projects. If you don't see your specific need listed, contact us — we're likely able to help.</p>
+      </div>
+      <div style="text-align: center;">
+        <a href="/contact" class="cta-button">Contact Us</a>
+        <a href="tel:+17744569850" class="cta-button outline" style="margin-left: 15px;">Call <%= company.phone %></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-section">
+    <div class="container">
+      <h2>Ready to Get Started?</h2>
+      <p>Contact us today for a free consultation and quote on your glass project.</p>
+      <a href="/contact" class="cta-button">Get a Free Quote</a>
+    </div>
+  </section>
+
+<%- include('partials/footer') %>

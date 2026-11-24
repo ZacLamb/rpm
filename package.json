@@ -1,20 +1,14 @@
 {
-  "name": "rpm-glass-site",
+  "name": "rpm-glass",
   "version": "1.0.0",
-  "description": "RPM Glass — commercial & residential glass, Northborough MA. Node/Express + EJS site for Railway.",
+  "description": "RPM Glass - Commercial & Residential Glass Solutions",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "postinstall": "node scripts/fetch-images.js",
-    "fetch-images": "node scripts/fetch-images.js"
+    "dev": "node server.js"
   },
-  "engines": { "node": ">=18" },
   "dependencies": {
-    "compression": "^1.7.4",
-    "ejs": "^3.1.10",
-    "express": "^4.19.2",
-    "pg": "^8.13.1",
-    "sanitize-html": "^2.14.0",
-    "sharp": "^0.33.5"
+    "express": "^4.18.2",
+    "ejs": "^3.1.9"
   }
 }

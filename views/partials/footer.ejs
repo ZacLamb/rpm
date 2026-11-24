@@ -1,44 +1,48 @@
-</main>
-<footer class="footer">
-  <div class="wrap footer__grid">
-    <div class="footer__brand">
-      <a class="footer__logo" href="/"><img src="/images/logo.png" alt="RPM Glass &amp; Services Inc." width="180" height="173" loading="lazy"></a>
-      <p>Commercial and residential glass design, installation and repair — trusted across Worcester County and MetroWest for over <%= business.yearsInBusiness %> years.</p>
-      <a class="footer__phone" href="<%= business.phoneHref %>"><%= business.phone %></a>
-      <p class="footer__addr"><%= business.street %><br><%= business.city %>, <%= business.state %> <%= business.zip %><br><a href="mailto:<%= business.email %>"><%= business.email %></a></p>
-      <div class="footer__social"><a href="<%= business.instagram %>" target="_blank" rel="noopener">Instagram</a></div>
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="/" class="logo">
+            <img src="https://assets.cdn.filesafe.space/gqZLaxiRnT93o0AopLh3/media/d654685c-1804-4c9d-97aa-0671aee0fe59.png" alt="RPM Glass Logo" style="height: 60px;">
+          </a>
+          <p>Delivering excellence in glass design, installation, and repair for over 12 years. Trust RPM Glass for all your commercial and residential glass needs.</p>
+        </div>
+        <div>
+          <h4 class="footer-title">Quick Links</h4>
+          <ul class="footer-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="/about">About Us</a></li>
+            <li><a href="/services">Services</a></li>
+            <li><a href="/gallery">Gallery</a></li>
+            <li><a href="/contact">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="footer-title">Services</h4>
+          <ul class="footer-links">
+            <% services.slice(0, 6).forEach(service => { %>
+              <li><a href="/services/<%= service.slug %>"><%= service.name %></a></li>
+            <% }); %>
+          </ul>
+        </div>
+        <div>
+          <h4 class="footer-title">Contact Us</h4>
+          <ul class="footer-links">
+            <li><a href="tel:+17744569850"><%= company.phone %></a></li>
+            <li><a href="mailto:<%= company.email %>"><%= company.email %></a></li>
+            <li><%= company.address %></li>
+            <li style="margin-top: 15px;">
+              <a href="<%= company.instagram %>" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; gap: 8px;">
+                📷 Follow us on Instagram
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; <%= new Date().getFullYear() %> RPM Glass. All rights reserved.</p>
+      </div>
     </div>
-    <div>
-      <h3 class="footer__h">Quick Links</h3>
-      <ul>
-        <li><a href="/">Home</a></li>
-        <li><a href="/about">About Us</a></li>
-        <li><a href="/services">All Services</a></li>
-        <li><a href="/service-areas">Service Areas</a></li>
-        <li><a href="/gallery">Our Work</a></li>
-        <% if (typeof blogNav !== 'undefined' && blogNav) { %><li><a href="/blog">Blog &amp; Guides</a></li><% } %>
-        <li><a href="/contact">Contact &amp; Free Estimate</a></li>
-      </ul>
-    </div>
-    <div>
-      <h3 class="footer__h">Our Services</h3>
-      <ul>
-        <% services.forEach(s => { %><li><a href="/services/<%= s.slug %>"><%= s.name %></a></li><% }) %>
-      </ul>
-    </div>
-    <div>
-      <h3 class="footer__h">Towns We Serve</h3>
-      <ul class="footer__towns">
-        <% towns.forEach(t => { %><li><a href="/service-areas/<%= t.slug %>"><%= t.name %>, MA</a></li><% }) %>
-      </ul>
-    </div>
-  </div>
-  <div class="wrap footer__bottom">
-    <span>© <%= year %> <%= business.legalName %> All rights reserved. Fully licensed &amp; insured in Massachusetts.</span>
-    <span><a href="/sitemap.xml">Sitemap</a></span>
-  </div>
-</footer>
-<a class="mobile-call" href="<%= business.phoneHref %>" aria-label="Call RPM Glass">Call Now · <%= business.phone %></a>
-<script src="/js/main.js?v=<%= assetV %>" defer></script>
+  </footer>
 </body>
 </html>

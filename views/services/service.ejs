@@ -1,0 +1,101 @@
+<%- include('../partials/header', { pageTitle: service.name, pageDescription: service.description.substring(0, 160) }) %>
+
+  <section class="page-hero">
+    <div class="container">
+      <nav class="breadcrumb">
+        <a href="/">Home</a>
+        <span>/</span>
+        <a href="/services">Services</a>
+        <span>/</span>
+        <span><%= service.name %></span>
+      </nav>
+      <h1><%= service.name %></h1>
+      <p class="tagline"><%= service.tagline %></p>
+      <p><%= service.description %></p>
+      <div style="margin-top: 30px;">
+        <a href="/contact" class="cta-button">Get a Free Quote</a>
+        <a href="tel:+17744569850" class="cta-button outline" style="margin-left: 15px;">Call <%= company.phone %></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <h2>Key Features</h2>
+        <p>What makes our <%= service.name.toLowerCase() %> solutions stand out.</p>
+      </div>
+      <ul class="features-list">
+        <% service.features.forEach(feature => { %>
+          <li><%= feature %></li>
+        <% }); %>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section section-dark">
+    <div class="container">
+      <div class="section-header">
+        <h2>Applications</h2>
+        <p>Common uses for <%= service.name.toLowerCase() %>.</p>
+      </div>
+      <div class="applications-grid">
+        <% service.applications.forEach(app => { %>
+          <div class="application-item">
+            <span><%= app %></span>
+          </div>
+        <% }); %>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-content">
+          <h2>Why Choose RPM Glass?</h2>
+          <p>When it comes to <%= service.name.toLowerCase() %>, you need a partner you can trust. RPM Glass brings over 12 years of experience, transparent pricing, and a commitment to safety and quality that sets us apart.</p>
+          <ul class="features-list" style="grid-template-columns: 1fr;">
+            <li>Over 12 years of industry experience</li>
+            <li>Transparent pricing with no hidden fees</li>
+            <li>Safety-first approach on every project</li>
+            <li>Quality materials and expert installation</li>
+            <li>Licensed and insured professionals</li>
+            <li>Serving all of Massachusetts</li>
+          </ul>
+        </div>
+        <div class="about-image">
+          <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/gqZLaxiRnT93o0AopLh3/media/3e89f447-0c09-4e81-9d95-9f2e76018857.jpeg" alt="RPM Glass Installation">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-dark">
+    <div class="container">
+      <div class="section-header">
+        <h2>Related Services</h2>
+        <p>Explore other glass solutions we offer.</p>
+      </div>
+      <div class="related-services">
+        <% relatedServices.forEach(related => { %>
+          <a href="/services/<%= related.slug %>" class="service-card">
+            <div class="service-icon">🔷</div>
+            <h3><%= related.name %></h3>
+            <p><%= related.tagline %></p>
+            <span class="service-link">Learn More →</span>
+          </a>
+        <% }); %>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-section">
+    <div class="container">
+      <h2>Ready to Get Started?</h2>
+      <p>Contact us today for a free consultation and quote on your <%= service.name.toLowerCase() %> project.</p>
+      <a href="/contact" class="cta-button">Get a Free Quote</a>
+    </div>
+  </section>
+
+<%- include('../partials/footer') %>

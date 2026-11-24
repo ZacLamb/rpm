@@ -1,0 +1,117 @@
+<%- include('partials/header', { pageTitle: 'Gallery', pageDescription: 'View our portfolio of completed glass projects including storefronts, railings, wine rooms, and more.' }) %>
+
+  <section class="page-hero">
+    <div class="container">
+      <nav class="breadcrumb">
+        <a href="/">Home</a>
+        <span>/</span>
+        <span>Gallery</span>
+      </nav>
+      <h1>Our Recent Work</h1>
+      <p class="tagline">Quality Craftsmanship on Display</p>
+      <p>Browse through our portfolio of completed projects to see the quality and attention to detail that goes into every RPM Glass installation.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="gallery-grid">
+        <div class="gallery-item">
+          <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/gqZLaxiRnT93o0AopLh3/media/6685b80defa0c1dfcd2b5ed6.jpeg" alt="Modern Glass Building">
+          <div class="gallery-overlay">
+            <h4>Commercial Building</h4>
+            <p>Modern glass facade</p>
+          </div>
+        </div>
+        <div class="gallery-item">
+          <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/gqZLaxiRnT93o0AopLh3/media/3e89f447-0c09-4e81-9d95-9f2e76018857.jpeg" alt="Glass Railing Installation">
+          <div class="gallery-overlay">
+            <h4>Glass Railing</h4>
+            <p>Residential deck</p>
+          </div>
+        </div>
+        <div class="gallery-item">
+          <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/gqZLaxiRnT93o0AopLh3/media/11c67bf6-90b0-41ef-853c-11ba75d4bcdc.jpeg" alt="Commercial Glass Installation">
+          <div class="gallery-overlay">
+            <h4>Commercial Installation</h4>
+            <p>Medical facility</p>
+          </div>
+        </div>
+        <div class="gallery-item">
+          <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/gqZLaxiRnT93o0AopLh3/media/2187d149-3327-402d-9cbf-fcf51fce793c.jpeg" alt="Glass Storage Room">
+          <div class="gallery-overlay">
+            <h4>Wine Room</h4>
+            <p>Basement installation</p>
+          </div>
+        </div>
+        <div class="gallery-item">
+          <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/gqZLaxiRnT93o0AopLh3/media/4a62afd2-fc89-40de-8a6f-a284dc0ead7a.jpeg" alt="Bathroom Vanity Mirror">
+          <div class="gallery-overlay">
+            <h4>Custom Mirror</h4>
+            <p>Bathroom vanity</p>
+          </div>
+        </div>
+        <div class="gallery-item">
+          <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://storage.googleapis.com/msgsndr/ym1zc3eSKks13eWpAow2/media/66611cff1f46ee5fff778ce5.jpeg" alt="Glass Installation Project">
+          <div class="gallery-overlay">
+            <h4>Storefront Glass</h4>
+            <p>Commercial entry</p>
+          </div>
+        </div>
+        <div class="gallery-item">
+          <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://storage.googleapis.com/msgsndr/ym1zc3eSKks13eWpAow2/media/66611d001b8465b115a16986.jpeg" alt="Glass Installation Project">
+          <div class="gallery-overlay">
+            <h4>Office Partition</h4>
+            <p>Modern workspace</p>
+          </div>
+        </div>
+        <div class="gallery-item">
+          <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://storage.googleapis.com/msgsndr/ym1zc3eSKks13eWpAow2/media/66611d001f46eef997778ce8.jpeg" alt="Glass Installation Project">
+          <div class="gallery-overlay">
+            <h4>Safety Glass</h4>
+            <p>Commercial application</p>
+          </div>
+        </div>
+        <div class="gallery-item">
+          <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://storage.googleapis.com/msgsndr/ym1zc3eSKks13eWpAow2/media/66611cff6cee2b56695c25c9.jpeg" alt="Glass Installation Project">
+          <div class="gallery-overlay">
+            <h4>Glass Enclosure</h4>
+            <p>Restaurant wine display</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-dark">
+    <div class="container">
+      <div class="section-header">
+        <h2>Over 1,000 Projects Completed</h2>
+        <p>From small residential repairs to large commercial installations, we bring the same level of quality and professionalism to every job.</p>
+      </div>
+      <div class="stats" style="max-width: 800px; margin: 0 auto;">
+        <div class="stat-item">
+          <span class="stat-number"><%= company.yearsInBusiness %></span>
+          <span class="stat-label">Years Experience</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number"><%= company.projectsCompleted %></span>
+          <span class="stat-label">Projects Completed</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number"><%= company.successRate %></span>
+          <span class="stat-label">Success Rate</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-section">
+    <div class="container">
+      <h2>Let's Create Something Beautiful</h2>
+      <p>Ready to start your glass project? Contact us today for a free consultation and quote.</p>
+      <a href="/contact" class="cta-button">Get a Free Quote</a>
+    </div>
+  </section>
+
+<%- include('partials/footer') %>

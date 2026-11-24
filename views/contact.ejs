@@ -1,0 +1,118 @@
+<%- include('partials/header', { pageTitle: 'Contact', pageDescription: 'Contact RPM Glass for a free quote on your glass project. Call (774) 456-9850 or fill out our contact form.' }) %>
+
+  <section class="page-hero">
+    <div class="container">
+      <nav class="breadcrumb">
+        <a href="/">Home</a>
+        <span>/</span>
+        <span>Contact</span>
+      </nav>
+      <h1>Contact Us</h1>
+      <p class="tagline">Get in Touch</p>
+      <p>Ready to start your glass project? Contact us today for a free consultation and quote. We serve residential and commercial clients throughout Massachusetts.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="contact-grid">
+        <div class="contact-form">
+          <h3>Send Us a Message</h3>
+          <form action="https://api.web3forms.com/submit" method="POST">
+            <input type="hidden" name="access_key" value="YOUR_ACCESS_KEY">
+            <input type="hidden" name="subject" value="New Contact Form Submission - RPM Glass">
+            <input type="hidden" name="redirect" value="https://rpmglass.com/contact?success=true">
+
+            <div class="form-group">
+              <label for="name">Full Name *</label>
+              <input type="text" id="name" name="name" required placeholder="Your name">
+            </div>
+
+            <div class="form-group">
+              <label for="email">Email Address *</label>
+              <input type="email" id="email" name="email" required placeholder="your@email.com">
+            </div>
+
+            <div class="form-group">
+              <label for="phone">Phone Number</label>
+              <input type="tel" id="phone" name="phone" placeholder="(xxx) xxx-xxxx">
+            </div>
+
+            <div class="form-group">
+              <label for="service">Service Interested In</label>
+              <select id="service" name="service">
+                <option value="">Select a service...</option>
+                <% services.forEach(service => { %>
+                  <option value="<%= service.name %>"><%= service.name %></option>
+                <% }); %>
+                <option value="Other">Other / Not Sure</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="message">Project Details *</label>
+              <textarea id="message" name="message" required placeholder="Tell us about your project..."></textarea>
+            </div>
+
+            <button type="submit" class="cta-button" style="width: 100%;">Send Message</button>
+          </form>
+        </div>
+
+        <div class="contact-info">
+          <h3>Contact Information</h3>
+
+          <div class="contact-item">
+            <div class="contact-icon">📞</div>
+            <div>
+              <h4>Phone</h4>
+              <a href="tel:+17744569850"><%= company.phone %></a>
+            </div>
+          </div>
+
+          <div class="contact-item">
+            <div class="contact-icon">✉️</div>
+            <div>
+              <h4>Email</h4>
+              <a href="mailto:<%= company.email %>"><%= company.email %></a>
+            </div>
+          </div>
+
+          <div class="contact-item">
+            <div class="contact-icon">📍</div>
+            <div>
+              <h4>Address</h4>
+              <p><%= company.address %></p>
+            </div>
+          </div>
+
+          <div class="contact-item">
+            <div class="contact-icon">📷</div>
+            <div>
+              <h4>Follow Us</h4>
+              <a href="<%= company.instagram %>" target="_blank" rel="noopener">Instagram @rpmglass_services</a>
+            </div>
+          </div>
+
+          <div style="margin-top: 40px; padding: 25px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px;">
+            <h4 style="margin-bottom: 15px;">Emergency Repairs</h4>
+            <p style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 15px;">Need urgent glass repair? Call us directly for the fastest response.</p>
+            <a href="tel:+17744569850" class="cta-button" style="width: 100%; text-align: center; justify-content: center;">Call Now: <%= company.phone %></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-dark">
+    <div class="container">
+      <div class="section-header">
+        <h2>Service Area</h2>
+        <p>Serving businesses and homeowners throughout Massachusetts.</p>
+      </div>
+      <div style="text-align: center; max-width: 600px; margin: 0 auto;">
+        <p style="color: var(--text-secondary); font-size: 1.05rem;">Based in Northborough, MA, RPM Glass provides commercial and residential glass services throughout the Greater Boston area, Worcester County, and surrounding regions.</p>
+      </div>
+    </div>
+  </section>
+
+<%- include('partials/footer') %>

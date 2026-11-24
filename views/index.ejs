@@ -1,0 +1,133 @@
+<%- include('partials/header', { pageTitle: 'Home', pageDescription: 'RPM Glass delivers excellence in glass design, installation, and repair. Serving Massachusetts with over 12 years of experience.' }) %>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <h1>Your Trusted Partner in <span>Glass Solutions</span></h1>
+        <p>Delivering Excellence in Glass Design, Installation, and Repair for Over 12 Years</p>
+        <div class="hero-buttons">
+          <a href="/contact" class="cta-button">Book Service</a>
+          <a href="/services" class="cta-button outline">Our Services</a>
+        </div>
+        <div class="stats">
+          <div class="stat-item">
+            <span class="stat-number"><%= company.yearsInBusiness %></span>
+            <span class="stat-label">Years in Business</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number"><%= company.projectsCompleted %></span>
+            <span class="stat-label">Projects Completed</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number"><%= company.successRate %></span>
+            <span class="stat-label">Success Rate</span>
+          </div>
+        </div>
+      </div>
+      <div class="hero-image">
+        <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/gqZLaxiRnT93o0AopLh3/media/6685b80defa0c1dfcd2b5ed6.jpeg" alt="Modern Glass Building">
+      </div>
+    </div>
+  </section>
+
+  <!-- Services Section -->
+  <section class="section section-dark">
+    <div class="container">
+      <div class="section-header">
+        <h2>The Best Services For Your Every Need</h2>
+        <p>You won't find a more comprehensive service for your glass needs. Now taking on jobs for the following:</p>
+      </div>
+      <div class="services-grid">
+        <% services.forEach(service => { %>
+          <a href="/services/<%= service.slug %>" class="service-card">
+            <div class="service-icon">🔷</div>
+            <h3><%= service.name %></h3>
+            <p><%= service.tagline %></p>
+            <span class="service-link">Learn More →</span>
+          </a>
+        <% }); %>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Preview Section -->
+  <section class="section">
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-image">
+          <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/gqZLaxiRnT93o0AopLh3/media/3e89f447-0c09-4e81-9d95-9f2e76018857.jpeg" alt="Glass Railing Installation">
+        </div>
+        <div class="about-content">
+          <h2>Safe and Clear to the World</h2>
+          <p>At RPM Glass, we are dedicated to providing top-quality glass solutions tailored to meet the unique needs of both residential and commercial clients.</p>
+          <p>With years of industry experience, we specialize in everything from heavy glass installations and safety glass to custom storefronts and elegant wine rooms.</p>
+          <p>Our commitment to transparent pricing and safety ensures that every project is completed with the highest standards. Trust RPM Glass to transform your space with durable, beautiful, and economical glass solutions.</p>
+          <a href="/contact" class="cta-button">Book Service</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pillars Section -->
+  <section class="section section-dark">
+    <div class="container">
+      <div class="section-header">
+        <h2>Create a Beautiful and Economical Environment</h2>
+        <p>Experience unmatched clarity and value with our services, built on the foundation of our key pillars.</p>
+      </div>
+      <div class="pillars">
+        <div class="pillar">
+          <h4>💰 Transparent Pricing</h4>
+          <p>Clear, upfront pricing with no hidden fees. Know exactly what you're paying for before we start.</p>
+        </div>
+        <div class="pillar">
+          <h4>🛡️ Safety First</h4>
+          <p>Prioritizing safety in every project we undertake. All installations meet or exceed building codes.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials Section -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <h2>What Our Clients Say</h2>
+        <p>Don't just take our word for it — hear from our satisfied customers.</p>
+      </div>
+      <div class="testimonials-slider">
+        <div class="testimonial-card">
+          <p class="testimonial-text">RPM Glass exceeded our expectations in every way. From the initial consultation to the final installation, their team was professional, courteous, and highly skilled. The new storefront glass they installed not only looks fantastic but has also significantly improved our store's energy efficiency. We couldn't be happier with the results and highly recommend RPM Glass for any commercial glass needs.</p>
+          <div class="testimonial-author">
+            <div class="author-avatar">DT</div>
+            <div class="author-info">
+              <h4>Diane T.</h4>
+              <span>Business Owner</span>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <p class="testimonial-text">I recently had RPM Glass install custom glass railings and doors for my new home, and the experience was outstanding. Their attention to detail, commitment to safety, and transparent pricing made the entire process seamless and stress-free. The quality of the workmanship is top-notch, and I've received numerous compliments on the beautiful glass features. RPM Glass truly transformed my home.</p>
+          <div class="testimonial-author">
+            <div class="author-avatar">ER</div>
+            <div class="author-info">
+              <h4>Emily R.</h4>
+              <span>Homeowner</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta-section">
+    <div class="container">
+      <h2>Move Into the Future with a Clear Vision</h2>
+      <p>Glass is a safe and effective solution to provide your location with the identity it needs to stay professional, elegant, and protected.</p>
+      <a href="/contact" class="cta-button">Get a Free Quote</a>
+    </div>
+  </section>
+
+<%- include('partials/footer') %>
